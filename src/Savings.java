@@ -1,0 +1,1 @@
+protected boolean isLoyal; //loyal customer status
