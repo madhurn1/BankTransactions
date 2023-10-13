@@ -1,5 +1,4 @@
-package eventorg;
-
+package rubank;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 
@@ -37,9 +36,7 @@ public class Date implements Comparable<Date> {
 //        System.out.println(this.day);
         this.year = Integer.parseInt(part.nextToken());
 //        System.out.println(this.year);
-
     }
-
     /**
      Creates an instance of Date using the current date.
      */

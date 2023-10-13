@@ -1,6 +1,6 @@
-
+package rubank;
 public class RunProject2 {
     public static void main(String[] args) {
-        new EventOrganizer().run();
+        new TransactionManager().run();
     }
 }
