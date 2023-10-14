@@ -6,12 +6,12 @@ public class Savings extends Account {
     private static final double MONTHLY_FEE = 25.0;
     protected boolean isLoyal; //loyal customer status
 
-    public Savings(Profile holder, double header, boolean isLoyal) {
+    public Savings(Profile holder, double balance, boolean isLoyal) {
         super(holder, balance);
         this.isLoyal = isLoyal;
     }
 
-    public double monthlyInterestCalculation(){
+    public double monthlyInterest(){
         double monthlyInt;
         if(isLoyal){
             monthlyInt=balance * (LOYALTY_INT_RATE/12);
@@ -22,12 +22,16 @@ public class Savings extends Account {
         return monthlyInt;
     }
 
-    public double monthlyFeeCalculation(){
+    public double monthlyFee(){
         if (balance >= 500.0){
             return 0.0;
         }
         else{
             return MONTHLY_FEE;
         }
+    }
+    @Override
+    public int compareTo(Account other) {
+        return this.holder.getLastName().compareTo(other.holder.getLastName());
     }
 }

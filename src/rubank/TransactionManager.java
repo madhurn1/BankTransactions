@@ -96,16 +96,30 @@ public class TransactionManager {
                 return;
             }
             Profile addProfile = new Profile(token[2],token[3],dateInput);
-            Account addAccount = new Account(addProfile,Double.parseDouble(token[5]));
-            Checking addChecking = new Checking(addProfile,Double.parseDouble(token[5]));
+            int key = bankType(token[1]);
+            if(key==1){
+                Checking addAccount = new Checking(addProfile,Double.parseDouble(token[5]));
+            }
+            else if(key==2){
+                CollegeChecking addAccount = new CollegeChecking(addProfile,Double.parseDouble(token[5]));
+            }
+            else if(key ==3){
+                MoneyMarket addAccount = new MoneyMarket(addProfile,Double.parseDouble(token[5]));
+            }
+            else if(key ==4){
+                Savings addAccount = new Savings(addProfile,Double.parseDouble(token[5]));
+            }
+            else{
+                System.out.println("Error");
+            }
 
-            if(accountDatabase.add()){
-                System.out.println("Event added to the calendar.");
+            if(accountDatabase.add(addAccount)){
+                System.out.println("Account opened");
             }else{
                 System.out.println("The event is already on the calendar.");
             }
         }catch (Exception e){
-            System.out.println("Error with adding an event.");
+            System.out.println("Error with adding an accoutn.");
         }
     }
 
@@ -129,71 +143,6 @@ public class TransactionManager {
             return null;
         }
         return addDate;
-    }
-
-    /**
-     * Converts a string representing a time slot to its respective Enum representation.
-     * Performs error checks on the validity of the time slot.
-     * @param timeSlot A string representing the timeslot, case-insensitive.
-     * @return A Timeslot enum to create an Event object with.
-     */
-    private Timeslot createTimeSlot(String timeSlot){
-        if(!(timeSlot.equalsIgnoreCase("MORNING") || timeSlot.equalsIgnoreCase("AFTERNOON")
-                || timeSlot.equalsIgnoreCase("EVENING"))){
-            System.out.println("Invalid time slot!");
-            return null;
-        }
-        timeSlot = timeSlot.toUpperCase();
-        Timeslot startTime = Timeslot.valueOf(timeSlot);
-        return startTime;
-    }
-
-    /**
-     * Converts a string representing a location to its respective Enum representation.
-     * Performs error checks on the validity of the location.
-     * @param location A string representing the location, case-insensitive.
-     * @return A Location enum to create an Event object with.
-     */
-    private Location createLocation(String location){
-        if(!(location.equalsIgnoreCase("HLL114")||location.equalsIgnoreCase("ARC103")
-                ||location.equalsIgnoreCase("BE_AUD")||location.equalsIgnoreCase("TIL232")
-                ||location.equalsIgnoreCase("AB2225")||location.equalsIgnoreCase("MU302"))){
-            System.out.println("Invalid location!");
-            return null;
-        }
-        location = location.toUpperCase();
-        try {
-            return Location.valueOf(location);
-        }catch (IllegalArgumentException e){
-            System.err.println("Invalid location: " + location);
-        }
-        return null;
-    }
-
-    /**
-     * Instantiates a Contact object to be used for the creation of an Event.
-     * Performs error checks on the validity of a contact.
-     * @param dept A String token in the form of "XX".
-     * @param email A string token in the form of "XX@rutgers.edu".
-     * @return The Contact object to be used.
-     */
-    private Contact createContact(String dept,String email){
-
-        if(!(dept.equalsIgnoreCase("BAIT")||dept.equalsIgnoreCase("CS")
-                ||dept.equalsIgnoreCase("ITI")||dept.equalsIgnoreCase("EE")
-                ||dept.equalsIgnoreCase("MATH"))){
-            System.out.println("Invalid contact information!");
-            return null;
-        }
-        dept=dept.toUpperCase();
-        Department newDept = Department.valueOf(dept);
-        Contact addContact = new Contact(newDept,email);
-
-        if(!addContact.isValid()){
-            System.out.println("Invalid contact information!");
-            return null;
-        }
-        return addContact;
     }
 
     /**
