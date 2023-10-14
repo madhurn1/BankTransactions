@@ -31,7 +31,7 @@ public class TransactionManager {
             String command = token[0];
             switch(command){
                 case "O":
-                    oCommand(token);
+                    oCommand(token)
                     break;
                 case "C":
                     rCommand(token);
@@ -65,33 +65,16 @@ public class TransactionManager {
      * @param token An array of tokens from the command-line arguments.
      */
     private void oCommand(String[] token){
-        if(token[1].equals("C")){
-            if(token.length!=6){
-                System.out.println("Invalid command format.");
-                return;
-            }
+        if(token.length==1){
+            System.out.println("Invalid Command!")
+            return;
         }
-        if(token[2].equals("CC")){
-            if(token.length!=7){
-                System.out.println("Invalid command format.");
-                return;
-            }
-        }
-        if(token[2].equals("S")){
-            if(token.length!=7) {
-                System.out.println("Invalid command format.");
-                return;
-            }
-        }
-        if(token[2].equals("MM")){
-            if(token.length!=6) {
-                System.out.println("Invalid command format.")
-                return;
-            }
+        if(token.length>=2 && token.length<=4){
+            System.out.println("Account Database is empty!")
+            return;
         }
         try{
             Profile firstName = createFname(token[1]);
-
             Date dateInput = createDate(token[1]);
             Timeslot startTime = createTimeSlot(token[2]);
             Location locationInput = createLocation(token[3]);
@@ -115,11 +98,10 @@ public class TransactionManager {
             System.out.println("Error with adding an event.");
         }
     }
-    private Profile createFname(String firstName){
-        Profile fName = new Profile(firstName);
-        return
+    private Profile createFname (String fName){
+        Profile firstName = new Date(fName);
+
     }
-    private
 
     /**
      * Instantiates a Date object to be used for the creation of an Event.

@@ -15,7 +15,6 @@ public class Date implements Comparable<Date> {
     public static final int QUADRENNIAL = 4;
     public static final int CENTENNIAL = 100;
     public static final int QUATERCENTENNIAL = 400;
-    public static final int THIS_YEAR = 2023;
     public static final int FIRST_MONTH = 1;
     public static final int LAST_MONTH = 12;
     public static final int FIRST_DAY = 1;
@@ -109,7 +108,7 @@ public class Date implements Comparable<Date> {
      */
     public int isValid(){
 
-        if (this.year < THIS_YEAR || this.month < FIRST_MONTH || this.month > LAST_MONTH || this.day < FIRST_DAY || this.year > NEXT_YEAR)
+        if (this.month < FIRST_MONTH || this.month > LAST_MONTH || this.day < FIRST_DAY || this.year > NEXT_YEAR)
             return 1;
 
         int[] dayMonth = {0, ODD_DAYS_MONTH, DAYS_FEB + isLeapYear(),
@@ -117,22 +116,22 @@ public class Date implements Comparable<Date> {
                 EVEN_DAYS_MONTH, ODD_DAYS_MONTH, ODD_DAYS_MONTH,
                 EVEN_DAYS_MONTH, ODD_DAYS_MONTH, EVEN_DAYS_MONTH,
                 ODD_DAYS_MONTH};
-        if (!checkDate() && this.day > dayMonth[month]){
+        if (checkDate() && this.day > dayMonth[month]){
             return 1;
         }
-        if (!checkDate())
+        if (checkDate())
             return 2;
 
-        Calendar eDate = Calendar.getInstance();
-        Calendar specificDate = Calendar.getInstance();
-        specificDate.set(Calendar.YEAR, this.year);
-        specificDate.set(Calendar.MONTH, (this.month)-1);
-        specificDate.set(Calendar.DAY_OF_MONTH, this.day);
-        eDate.add(Calendar.MONTH,6);
-
-        if(!eDate.after(specificDate)){ //6 months or more error statement
-            return 3;
-        }
+//        Calendar eDate = Calendar.getInstance();
+//        Calendar specificDate = Calendar.getInstance();
+//        specificDate.set(Calendar.YEAR, this.year);
+//        specificDate.set(Calendar.MONTH, (this.month)-1);
+//        specificDate.set(Calendar.DAY_OF_MONTH, this.day);
+//        eDate.add(Calendar.MONTH,6);
+//
+//        if(!eDate.after(specificDate)){ //6 months or more error statement
+//            return 3;
+//        }
 
         if(this.day <= dayMonth[month])
             return 0;
