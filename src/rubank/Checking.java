@@ -4,7 +4,7 @@ public class Checking extends Account{
     private static final double INT_RATE =0.01; //1%
     private static final double MONTHLY_FEE = 12.0;
 
-    public checking(Profile holder,double balance) {
+    public Checking(Profile holder,double balance) {
         super(holder,balance);
     }
     @Override

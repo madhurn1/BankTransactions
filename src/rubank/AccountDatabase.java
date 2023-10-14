@@ -1,10 +1,13 @@
 package rubank;
+/**
+ An Account Database to be held at a given location.
+ @author Dany Chucri, Madhur Nutulapati
+ */
 public class AccountDatabase {
     private Account [] accounts; //list of various types of accounts
     private int numAcct; //number of accounts in the array
 
     private static final int NOT_FOUND = -1;
-
     private int find(Account account) {
         for (int i = 0; i < numAcct; i++){
             if (accounts[i].equals(account)){
@@ -34,7 +37,7 @@ public class AccountDatabase {
             numAcct++;
             return true;
         }
-        if (find(account) != -1){
+        if (find(account) != NOT_FOUND){
             return false;
         }
         if (numAcct == accounts.length)
@@ -43,9 +46,31 @@ public class AccountDatabase {
         numAcct++;
         return true;
     } //add a new account
-    public boolean close(Account account){} //remove the given account
-    public boolean withdraw(Account account){} //false if insufficient fund
-    public void deposit(Account account){}
+    public boolean close(Account account){
+        int foundAccount = find(account);
+        if(foundAccount!=NOT_FOUND){
+            for(int j=foundAccount; j<numAcct-1;j++){
+                accounts[i] = accounts[i+1];
+            }
+            numAcct--;
+            return true;
+        }
+        else{
+            return false;
+        }
+    } //remove the given account
+    public boolean withdraw(Account account) {
+        int foundAccount = find(account);
+        if (foundAccount != NOT_FOUND) {
+
+        }
+    }//false if insufficient fund
+    public void deposit(Account account){
+        int foundAccount = find(account);
+        if(foundAccount!=NOT_FOUND){
+
+        }
+    }
     public void printSorted(){} //sort by account type and profile
     public void printFeesAndInterests(){} //calculate interests/fees
     public void printUpdatedBalances(){} //apply the interests/fees

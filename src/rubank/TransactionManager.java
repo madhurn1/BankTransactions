@@ -31,7 +31,7 @@ public class TransactionManager {
             String command = token[0];
             switch(command){
                 case "O":
-                    oCommand(token)
+                    oCommand(token);
                     break;
                 case "C":
                     rCommand(token);
@@ -59,6 +59,22 @@ public class TransactionManager {
             }
         }
     }
+    private int bankType(String entry) {
+        if (entry.equals("C"))
+            return 1;
+
+        else if (entry.equals("CC"))
+            return 2;
+
+        else if (entry.equals("MM"))
+            return 3;
+
+        else if (entry.equals("S"))
+            return 4;
+
+        else
+            return 5;
+    }
 
     /**
      * Command for adding an Event to the Event Calendar.
@@ -66,30 +82,24 @@ public class TransactionManager {
      */
     private void oCommand(String[] token){
         if(token.length==1){
-            System.out.println("Invalid Command!")
+            System.out.println("Invalid Command!");
             return;
         }
         if(token.length>=2 && token.length<=4){
-            System.out.println("Account Database is empty!")
+            System.out.println("Account Database is empty!");
             return;
         }
         try{
-            Profile firstName = createFname(token[1]);
-            Date dateInput = createDate(token[1]);
-            Timeslot startTime = createTimeSlot(token[2]);
-            Location locationInput = createLocation(token[3]);
-            Contact aContact = createContact(token[4],token[5]);
-            int duration=Integer.parseInt(token[6]);
-
-            if(dateInput == null || startTime == null || locationInput == null
-                    || aContact == null){
-                //System.out.println("Invalid tokens");
+            Date dateInput = createDate(token[5]);
+            if(dateInput == null){
+                System.out.println("Invalid tokens");
                 return;
             }
+            Profile addProfile = new Profile(token[2],token[3],dateInput);
+            Account addAccount = new Account(addProfile,Double.parseDouble(token[5]));
+            Checking addChecking = new Checking(addProfile,Double.parseDouble(token[5]));
 
-            Event addEvent = new Event(dateInput,startTime,locationInput,aContact,duration);
-
-            if(calendar.add(addEvent)){
+            if(accountDatabase.add()){
                 System.out.println("Event added to the calendar.");
             }else{
                 System.out.println("The event is already on the calendar.");
@@ -97,10 +107,6 @@ public class TransactionManager {
         }catch (Exception e){
             System.out.println("Error with adding an event.");
         }
-    }
-    private Profile createFname (String fName){
-        Profile firstName = new Date(fName);
-
     }
 
     /**
