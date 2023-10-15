@@ -9,14 +9,6 @@ public class Checking extends Account{
         super(holder, balance);
     }
 
-    public double getInterestRate() {
-        return INT_RATE;
-    }
-
-    public double getMonthlyFee() {
-        return MONTHLY_FEE;
-    }
-
     @Override
     public double monthlyInterest() {
         return balance * (INT_RATE / 12);
