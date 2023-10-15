@@ -112,7 +112,7 @@ public class AccountDatabase {
     }
 
 
-    public void selectionSortAccounts(){
+    private void selectionSortAccounts(){
         for (int i = 0; i < numAcct - 1; i++){
             int min = i;
             for (int j = i + 1; j < numAcct; j++){
