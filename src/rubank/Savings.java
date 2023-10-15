@@ -11,6 +11,11 @@ public class Savings extends Account {
         this.isLoyal = isLoyal;
     }
 
+    public boolean getLoyalty() {
+        return isLoyal;
+    }
+
+    @Override
     public double monthlyInterest(){
         double monthlyInt;
         if(isLoyal){
@@ -22,6 +27,7 @@ public class Savings extends Account {
         return monthlyInt;
     }
 
+    @Override
     public double monthlyFee(){
         if (balance >= 500.0){
             return 0.0;
@@ -29,9 +35,5 @@ public class Savings extends Account {
         else{
             return MONTHLY_FEE;
         }
-    }
-    @Override
-    public int compareTo(Account other) {
-        return this.holder.getLastName().compareTo(other.holder.getLastName());
     }
 }
