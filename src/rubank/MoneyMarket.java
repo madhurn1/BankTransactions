@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public class MoneyMarket extends Savings{
     int withdrawal; //number of withdrawals
-    private static final double MONTHLY_FEE = 10.0;
+    private static final double MONTHLY_FEE = 25.0;
     private static final double INT_RATE = 0.045;
     private static final double LOYALTY_INT_RATE = 0.0475;
 

@@ -1,4 +1,7 @@
 package rubank;
+
+import java.text.DecimalFormat;
+
 /**
  An Account Database to be held at a given location.
  @author Dany Chucri, Madhur Nutulapati
@@ -9,6 +12,8 @@ public class AccountDatabase {
     private int numAcct; // number of accounts in the array
 
     private static final int NOT_FOUND = -1;
+
+    private static final int NUM_MONTHS = 12;
 
     private int find(Account account) {
         for (int i = 0; i < numAcct; i++) {
@@ -141,11 +146,84 @@ public class AccountDatabase {
 
     } // sort by account type and profile, then print
 
-    public void printFeesAndInterests() {
+    private double calcMonthlyFee(Account account) {
+        double fee = 0;
+        if (account instanceof CollegeChecking acc) {
+            fee = 0;
+        }
+        else if (account instanceof Checking acc) {
+            if (acc.getBalance() >= 1000)
+                fee = 0;
+            else fee = acc.getMonthlyFee();
+        }
+        else if (account instanceof MoneyMarket acc) {
+            if (acc.getBalance() >= 2000) {
+                fee = 0;
+            }
+            else fee = acc.getMonthlyFee();
+        }
+        else if (account instanceof Savings acc) {
+            if (acc.getBalance() >= 500) {
+                fee = 0;
+            }
+            else fee = acc.getMonthlyFee();
+        }
 
-    } //calculate interests/fees
+        return fee;
+    }
+
+    private double calcMonthlyInterest(Account account) {
+        double interest = 0;
+        if (account instanceof Checking acc) {
+            interest = acc.getBalance() * (acc.getInterestRate() / NUM_MONTHS);
+        }
+        else if (account instanceof MoneyMarket acc) {
+            if (acc.getLoyalty()) {
+                interest = acc.getBalance() * (acc.getLoyaltyIntRate() / NUM_MONTHS);
+            }
+            else interest = acc.getBalance() * (acc.getInterestRate() / NUM_MONTHS);
+        }
+        else if (account instanceof Savings acc) {
+            if (acc.getLoyalty()) {
+                interest = acc.getBalance() * (acc.getLoyaltyIntRate() / NUM_MONTHS);
+            }
+            else interest = acc.getBalance() * (acc.getInterestRate() / NUM_MONTHS);
+        }
+
+        return interest;
+    }
+
+    public void printFeesAndInterests() {
+        if (numAcct == 0){
+            System.out.println("Account Database is empty!");
+            return;
+        }
+        System.out.println("*list of accounts with fee and monthly interest");
+        for (int i = 0; i < numAcct; i++)
+        {
+            double fee = calcMonthlyFee(accounts[i]);
+            double interest = calcMonthlyInterest(accounts[i]);
+            DecimalFormat formatter = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+            String feeString = "$" + formatter.format(fee);
+            String interestString = "$" + formatter.format(interest);
+            System.out.println(accounts[i] + "::fee " + feeString + "::monthly interest " + interestString);
+        }
+        System.out.println("*end of list.");
+    } //calculate interests/fees, then print
 
     public void printUpdatedBalances() {
-
-    } //apply the interests/fees
+        if (numAcct == 0){
+            System.out.println("Account Database is empty!");
+            return;
+        }
+        System.out.println("*list of accounts with fees and interests applied.");
+        for (int i = 0; i < numAcct; i++)
+        {
+            double fee = calcMonthlyFee(accounts[i]);
+            double interest = calcMonthlyInterest(accounts[i]);
+            accounts[i].setBalance(accounts[i].getBalance() - fee + interest);
+            System.out.println(accounts[i]);
+        }
+        System.out.println("*end of list.");
+    } //apply the interests/fees, then print
 }

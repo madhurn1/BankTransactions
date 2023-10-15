@@ -13,6 +13,18 @@ public class Savings extends Account {
         this.isLoyal = isLoyal;
     }
 
+    public double getInterestRate() {
+        return INT_RATE;
+    }
+
+    public double getLoyaltyIntRate() {
+        return LOYALTY_INT_RATE;
+    }
+
+    public double getMonthlyFee() {
+        return MONTHLY_FEE;
+    }
+
     public boolean getLoyalty() {
         return isLoyal;
     }

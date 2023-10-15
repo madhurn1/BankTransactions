@@ -2,11 +2,19 @@ package rubank;
 import java.text.DecimalFormat;
 
 public class Checking extends Account{
-    private static final double INT_RATE =0.01; //1%
+    private static final double INT_RATE = 0.01; //1%
     private static final double MONTHLY_FEE = 12.0;
 
     public Checking(Profile holder,double balance) {
         super(holder, balance);
+    }
+
+    public double getInterestRate() {
+        return INT_RATE;
+    }
+
+    public double getMonthlyFee() {
+        return MONTHLY_FEE;
     }
 
     @Override
