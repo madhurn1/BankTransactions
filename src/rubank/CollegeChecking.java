@@ -1,7 +1,7 @@
 package rubank;
 
 public class CollegeChecking extends Checking {
-    private Campus campus; //campus code
+    private Campus campus; //campus code 0 - New Brunswick, 1 - Newark, 2 - Camden
 
     private static final double INT_RATE = 0.01; //1%
     private static final double MONTHLY_FEE = 0;

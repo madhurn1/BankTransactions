@@ -17,7 +17,7 @@ public class AccountDatabase {
         return NOT_FOUND;
     } //search for an account in the array
     private void grow(){
-        Account[] moreAccounts = new Account[numAcct.length + 4];
+        Account[] moreAccounts = new Account[accounts.length + 4];
         for (int i = 0; i < numAcct; i++){
             moreAccounts[i] = accounts[i];
         }
@@ -50,7 +50,7 @@ public class AccountDatabase {
         int foundAccount = find(account);
         if(foundAccount!=NOT_FOUND){
             for(int j=foundAccount; j<numAcct-1;j++){
-                accounts[i] = accounts[i+1];
+                accounts[j] = accounts[j+1];
             }
             numAcct--;
             return true;
@@ -62,13 +62,14 @@ public class AccountDatabase {
     public boolean withdraw(Account account) {
         int foundAccount = find(account);
         if (foundAccount != NOT_FOUND) {
-
+        //...FINISH
         }
+        return false;
     }//false if insufficient fund
     public void deposit(Account account){
         int foundAccount = find(account);
         if(foundAccount!=NOT_FOUND){
-
+    //...FINISH
         }
     }
     public void printSorted(){} //sort by account type and profile
