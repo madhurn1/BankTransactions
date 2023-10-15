@@ -101,6 +101,7 @@ public class TransactionManager {
                 Checking addAccount = new Checking(addProfile,Double.parseDouble(token[5]));
             }
             else if(key==2){
+                Campus
                 CollegeChecking addAccount = new CollegeChecking(addProfile,Double.parseDouble(token[5]));
             }
             else if(key ==3){
