@@ -24,7 +24,7 @@ public class Checking extends Account{
 
     @Override
     public double monthlyFee() {
-        if (balance >= 1000.0){
+        if (balance >= 1000.0) {
             return 0.0;
         }
         else {
@@ -36,7 +36,7 @@ public class Checking extends Account{
     public String toString() {
         DecimalFormat formatter = (DecimalFormat) DecimalFormat.getCurrencyInstance();
         String writtenBalance = formatter.format(balance);
-        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + ":: Balance $" + writtenBalance;
+        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + "::Balance " + writtenBalance;
     }
 
     @Override
