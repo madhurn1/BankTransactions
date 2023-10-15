@@ -4,9 +4,9 @@ package rubank;
  @author Dany Chucri, Madhur Nutulapati
  */
 public class AccountDatabase {
-    private Account [] accounts; //list of various types of accounts
+    private Account [] accounts; // list of various types of accounts
 
-    private int numAcct; //number of accounts in the array
+    private int numAcct; // number of accounts in the array
 
     private static final int NOT_FOUND = -1;
 
@@ -81,9 +81,40 @@ public class AccountDatabase {
         }
     }
 
-    public void printSorted() {
 
-    } //sort by account type and profile
+    public void selectionSortAccounts(){
+        for (int i = 0; i < numAcct - 1; i++){
+            int min = i;
+            for (int j = i + 1; j < numAcct; j++){
+                if (accounts[j].compareTo(accounts[min]) == 0) {
+                    if (accounts[j].getHolder().compareTo(accounts[min].getHolder()) < 0) {
+                        min = j;
+                    }
+                }
+                else if (accounts[j].compareTo(accounts[min]) < 0){
+                    min = j;
+                }
+            }
+            Account minDateEvent = accounts[min];
+            accounts[min] = accounts[i];
+            accounts[i] = minDateEvent;
+        }
+    }
+
+    public void printSorted() {
+        selectionSortAccounts();
+        if (numAcct == 0){
+            System.out.println("Account Database is empty!");
+            return;
+        }
+        System.out.println("*Accounts sorted by account type and profile.");
+        for(int i = 0; i < numAcct; i++){
+            System.out.println(accounts[i]);
+        }
+        System.out.println("*end of list.");
+
+
+    } // sort by account type and profile, then print
 
     public void printFeesAndInterests() {
 

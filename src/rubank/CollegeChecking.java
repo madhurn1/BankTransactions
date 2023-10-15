@@ -1,5 +1,7 @@
 package rubank;
 
+import java.text.DecimalFormat;
+
 public class CollegeChecking extends Checking {
     private Campus campus; //campus code 0 - New Brunswick, 1 - Newark, 2 - Camden
 
@@ -28,5 +30,12 @@ public class CollegeChecking extends Checking {
         else {
             return MONTHLY_FEE;
         }
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat formatter = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        String writtenBalance = formatter.format(balance);
+        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + ":: Balance $" + writtenBalance + "::" + campus.toString();
     }
 }

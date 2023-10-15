@@ -1,5 +1,7 @@
 package rubank;
 
+import java.text.DecimalFormat;
+
 public class MoneyMarket extends Savings{
     int withdrawal; //number of withdrawals
     private static final double MONTHLY_FEE = 10.0;
@@ -37,5 +39,14 @@ public class MoneyMarket extends Savings{
             return MONTHLY_FEE;
         }
         return 0.0;
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat formatter = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        String writtenBalance = formatter.format(balance);
+        String loyalty = "";
+        if (isLoyal) loyalty += "::is loyal";
+        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + ":: Balance $" + writtenBalance + loyalty + "withdrawal: " + withdrawal;
     }
 }

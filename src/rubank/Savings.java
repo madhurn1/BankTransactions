@@ -1,5 +1,7 @@
 package rubank;
 
+import java.text.DecimalFormat;
+
 public class Savings extends Account {
     private static final double INT_RATE = 0.04;
     private static final double LOYALTY_INT_RATE = 0.0425;
@@ -35,5 +37,23 @@ public class Savings extends Account {
         else{
             return MONTHLY_FEE;
         }
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat formatter = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        String writtenBalance = formatter.format(balance);
+        String loyalty = "";
+        if (isLoyal) loyalty += "::is loyal";
+        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + ":: Balance $" + writtenBalance + loyalty;
+    }
+
+    @Override
+    public int compareTo(Account obj) {
+        int accTypeCompare = this.toString().compareTo(obj.toString());
+        if (accTypeCompare != 0) {
+            return accTypeCompare;
+        }
+        return this.holder.compareTo(obj.holder);
     }
 }

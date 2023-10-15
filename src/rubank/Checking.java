@@ -1,4 +1,5 @@
 package rubank;
+import java.text.DecimalFormat;
 
 public class Checking extends Account{
     private static final double INT_RATE =0.01; //1%
@@ -21,5 +22,21 @@ public class Checking extends Account{
         else {
             return MONTHLY_FEE;
         }
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat formatter = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        String writtenBalance = formatter.format(balance);
+        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + ":: Balance $" + writtenBalance;
+    }
+
+    @Override
+    public int compareTo(Account obj) {
+        int accTypeCompare = this.toString().compareTo(obj.toString());
+        if (accTypeCompare != 0) {
+            return accTypeCompare;
+        }
+        return this.holder.compareTo(obj.holder);
     }
 }
