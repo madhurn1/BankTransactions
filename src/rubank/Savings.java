@@ -4,7 +4,7 @@ public class Savings extends Account {
     private static final double INT_RATE = 0.04;
     private static final double LOYALTY_INT_RATE = 0.0425;
     private static final double MONTHLY_FEE = 25.0;
-    protected boolean isLoyal; //loyal customer status
+    protected boolean isLoyal; // loyal customer status
 
     public Savings(Profile holder, double balance, boolean isLoyal) {
         super(holder, balance);
