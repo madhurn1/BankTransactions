@@ -53,4 +53,13 @@ public class MoneyMarket extends Savings{
         if (isLoyal) loyalty += "::is loyal";
         return "Money Market::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + "::Balance " + writtenBalance + loyalty + "withdrawal: " + withdrawal;
     }
+
+    @Override
+    public int compareTo(Account obj) {
+        int accTypeCompare = this.toString().compareTo(obj.toString());
+        if (accTypeCompare != 0) {
+            return accTypeCompare;
+        }
+        return this.holder.compareTo(obj.holder);
+    }
 }
