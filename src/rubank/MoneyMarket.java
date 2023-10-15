@@ -17,6 +17,14 @@ public class MoneyMarket extends Savings{
         return withdrawal;
     }
 
+    public void setLoyalty(boolean newLoyalty) {
+        isLoyal = newLoyalty;
+    }
+
+    public void incWithdrawal() {
+        withdrawal++;
+    }
+
     @Override
     public double monthlyInterest() {
         if (balance >= 2000.0){

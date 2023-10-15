@@ -69,7 +69,26 @@ public class AccountDatabase {
     public boolean withdraw(Account account) {
         int foundAccount = find(account);
         if (foundAccount != NOT_FOUND) {
-        //...FINISH
+            double newBalance = accounts[foundAccount].getBalance() - account.getBalance();
+            if (newBalance < 0) return false;
+            accounts[foundAccount].setBalance(newBalance);
+            if (accounts[foundAccount] instanceof MoneyMarket acc) {
+                if (acc.getWithdrawals() >= 3) {
+                    double mmBalance = acc.getBalance() - 10;
+                    if (mmBalance < 0) {
+                        acc.setBalance(acc.getBalance() + account.getBalance());
+                        return false;
+                    }
+                    else {
+                        acc.setBalance(mmBalance);
+                    }
+                }
+                if (newBalance < 2000 && (acc.getLoyalty())) {
+                    acc.setLoyalty(false);
+                }
+                acc.incWithdrawal();
+            }
+            return true;
         }
         return false;
     }//false if insufficient fund
@@ -77,7 +96,13 @@ public class AccountDatabase {
     public void deposit(Account account) {
         int foundAccount = find(account);
         if (foundAccount != NOT_FOUND) {
-            //...FINISH
+            double newBalance = accounts[foundAccount].getBalance() + account.getBalance();
+            accounts[foundAccount].setBalance(newBalance);
+            if (accounts[foundAccount] instanceof MoneyMarket acc) {
+                if (newBalance >= 2000 && !(acc.getLoyalty())) {
+                    acc.setLoyalty(true);
+                }
+            }
         }
     }
 

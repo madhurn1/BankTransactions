@@ -22,6 +22,10 @@ public abstract class Account implements Comparable<Account> {
         return holder;
     }
 
+    public void setBalance(double newBalance) {
+        balance = newBalance;
+    }
+
     public abstract String toString();
 
     public abstract int compareTo(Account obj);
