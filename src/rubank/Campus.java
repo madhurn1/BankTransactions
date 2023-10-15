@@ -6,8 +6,17 @@ package rubank;
  @author Dany Chucri, Madhur Nutulapati
  */
 public enum Campus {
-    NEW_BRUNSWICK,
-    NEWARK,
-    CAMDEN;
+        NEW_BRUNSWICK(0),
+        NEWARK(1),
+        CAMDEN(2);
 
+        private final int value;
+
+        Campus(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
 }

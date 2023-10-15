@@ -106,13 +106,18 @@ public class TransactionManager {
         }
     }
     private void createCollegeChecking(Profile addProfile,double balance, Campus code,int operation){
+        System.out.println("point1");
         CollegeChecking addAccount = new CollegeChecking(addProfile,balance,code);
+        System.out.println("point2");
+
         if(operation==OPEN_INDICATION){
-            if(accountDatabase.open(addAccount))
+            System.out.println("Enter Open");
+            if(accountDatabase.open(addAccount)) {
+                System.out.println("test");
                 System.out.println("Account opened");
+            }
             else
                 System.out.println("The account is already on the database.");
-            //add else everywhere
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
                 System.out.println("Account has been removed from the database!");
@@ -137,7 +142,6 @@ public class TransactionManager {
                 System.out.println("Account opened");
             else
                 System.out.println("The account is already on the database.");
-            //add else everywhere
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
                 System.out.println("Account has been removed from the database!");
@@ -167,7 +171,6 @@ public class TransactionManager {
                 System.out.println("Account opened");
             else
                 System.out.println("The account is already on the database.");
-            //add else everywhere
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
                 System.out.println("Account has been removed from the database!");
@@ -185,6 +188,18 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+    private String checkCampusCode(int campCode){
+        if(campCode==0){
+            return "NEW_BRUNSWICK";
+        } else if (campCode==1) {
+            return "NEWARK";
+        } else if (campCode==2) {
+            return "CAMDEN";
+        }
+        else{
+            return "INVALID";
+        }
+    }
     /**
      * Command for adding an Event to the Event Calendar.
      * @param token An array of tokens from the command-line arguments.
@@ -199,19 +214,26 @@ public class TransactionManager {
             return;
         }
         try{
-            Date dateInput = createDate(token[5]);
+            Date dateInput = createDate(token[4]);
             if(dateInput == null){
                 System.out.println("Invalid tokens");
                 return;
             }
             Profile addProfile = new Profile(token[2],token[3],dateInput);
             int key = bankType(token[1]);
-
+            int code = Integer.parseInt(token[6]);
+            String phraseLoc=checkCampusCode(code);
+            if (phraseLoc.equals("INVALID")){
+                System.out.println("Invalid Campus Code");
+            }
             if(key==1)
                 createChecking(addProfile,Double.parseDouble(token[5]),OPEN_INDICATION);
             else if(key==2){
-                Campus campCode= Campus.valueOf(token[1]);
+                System.out.println(phraseLoc);
+                Campus campCode= Campus.valueOf(phraseLoc);
+                System.out.println("Campus code "+Campus.valueOf(phraseLoc));
                 createCollegeChecking(addProfile,Double.parseDouble(token[5]),campCode,OPEN_INDICATION);
+                System.out.println("Finished");
             }
             else if(key ==3)
                 createMoneyMarket(addProfile,Double.parseDouble(token[5]),OPEN_INDICATION);
@@ -233,6 +255,7 @@ public class TransactionManager {
 
     private Date createDate(String date){
         Date addDate = new Date(date);
+        System.out.println("is date valid key -" + addDate.isValid());
         if(addDate.isValid() == 1){
             System.out.println(date + ": Invalid calendar date!");
             return null;
@@ -358,7 +381,7 @@ public class TransactionManager {
 //     * Command for printing the event calendar, with the events sorted by the department in the contact.
 //     */
 //    private void pdCommand(){
-//        calendar.printByDepartment();
+//        calendar.printByDepa  rtment();
 //    }
 
     public static void main(String[] args){
