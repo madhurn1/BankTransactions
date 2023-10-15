@@ -31,7 +31,7 @@ public class TransactionManager {
             String fullCommand = S.nextLine().trim();//read + trim
             if(fullCommand.isEmpty())//blank line
                 continue;
-            String result = fullCommand .replaceAll(" +", " ");
+            String result = fullCommand .replaceAll("\s+", " ");
             String[] token = result.split(" ");
             String command = token[0];
             switch(command){
@@ -64,7 +64,6 @@ public class TransactionManager {
             }
         }
     }
-
     private int bankType(String entry) {
         if (entry.equals("C"))
             return 1;
@@ -81,7 +80,6 @@ public class TransactionManager {
         else
             return 5;
     }
-
     private void createChecking(Profile addProfile,double balance,int operation){
         Checking addAccount = new Checking(addProfile,balance);
         if(operation==OPEN_INDICATION){
@@ -107,7 +105,6 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
-
     private void createCollegeChecking(Profile addProfile,double balance, Campus code,int operation){
         CollegeChecking addAccount = new CollegeChecking(addProfile,balance,code);
         if(operation==OPEN_INDICATION){
@@ -133,7 +130,6 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
-
     private void createMoneyMarket(Profile addProfile,double balance,int operation){
         MoneyMarket addAccount = new MoneyMarket(addProfile,balance);
         if(operation==OPEN_INDICATION){
@@ -159,7 +155,6 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
-
     private void createSavings(Profile addProfile,double balance, int loyal,int operation){
         boolean loyalKey=false;//check default val
         if(loyal==1)
@@ -190,7 +185,6 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
-
     /**
      * Command for adding an Event to the Event Calendar.
      * @param token An array of tokens from the command-line arguments.
@@ -284,7 +278,6 @@ public class TransactionManager {
             System.out.println("Error processing command");
         }
     }
-
     private void dCommand(String[] token) {
         if(token.length!=5){
             System.out.println("Invalid command format.");
@@ -300,20 +293,19 @@ public class TransactionManager {
             int key = bankType(token[1]);
 
             if(key==1)
-                createChecking(depositAccount,Double.parseDouble(token[4]),DEPOSIT_INDICATION);
+                createChecking(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
             else if(key==2)
-                createCollegeChecking(depositAccount,Double.parseDouble(token[4]),null,DEPOSIT_INDICATION);
+                createCollegeChecking(depositAccount,Double.parseDouble(token[5]),null,DEPOSIT_INDICATION);
             else if(key ==3)
-                createMoneyMarket(depositAccount,Double.parseDouble(token[4]),DEPOSIT_INDICATION);
+                createMoneyMarket(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
             else if(key == 4)
-                createSavings(depositAccount,Double.parseDouble(token[4]),0,DEPOSIT_INDICATION);
+                createSavings(depositAccount,Double.parseDouble(token[5]),0,DEPOSIT_INDICATION);
             else
                 System.out.println("Not valid Bank Type 2");//specify
         }catch (Exception e){
             System.out.println("Error processing command");
         }
     }
-
     private void wCommand(String [] token){
         if(token.length!=5){
             System.out.println("Invalid command format.");
@@ -341,10 +333,9 @@ public class TransactionManager {
             System.out.println("Error processing command");
         }
     }
-
-    /**
-     * Command for printing the event calendar as it currently is.
-     */
+        /**
+         * Command for printing the event calendar as it currently is.
+         */
 //    private void pCommand(){
 //        calendar.print();
 //    }
