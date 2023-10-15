@@ -22,12 +22,7 @@ public abstract class Account implements Comparable<Account> {
         return holder;
     }
 
-    @Override
-    public int compareTo(Account obj) {
-        int accTypeCompare = this.toString().compareTo(obj.toString());
-        if (accTypeCompare != 0) {
-            return accTypeCompare;
-        }
-        return this.holder.compareTo(obj.holder);
-    }
+    public abstract String toString();
+
+    public abstract int compareTo(Account obj);
 }
