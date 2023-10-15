@@ -15,7 +15,8 @@ public class Savings extends Account {
         return isLoyal;
     }
 
-    public double monthlyInterestCalculation(){
+    @Override
+    public double monthlyInterest(){
         double monthlyInt;
         if(isLoyal){
             monthlyInt=balance * (LOYALTY_INT_RATE/12);
@@ -26,7 +27,8 @@ public class Savings extends Account {
         return monthlyInt;
     }
 
-    public double monthlyFeeCalculation(){
+    @Override
+    public double monthlyFee(){
         if (balance >= 500.0){
             return 0.0;
         }

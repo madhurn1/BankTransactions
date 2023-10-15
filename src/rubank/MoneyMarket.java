@@ -16,15 +16,14 @@ public class MoneyMarket extends Savings{
     }
 
     @Override
-    public double monthlyInterestCalculation() {
+    public double monthlyInterest() {
         if (balance >= 2000.0){
-            if(isloyal){
+            if(isLoyal){
                 return balance * (LOYALTY_INT_RATE / 12);
             }
             else{
                 return balance * (INT_RATE / 12);
             }
-            return
         }
         else{
             isLoyal = false;
@@ -33,7 +32,7 @@ public class MoneyMarket extends Savings{
     }
 
     @Override
-    public double monthlyFeeCalculation(){
+    public double monthlyFee(){
         if(balance < 2000.0 || withdrawal > 3){
             return MONTHLY_FEE;
         }
