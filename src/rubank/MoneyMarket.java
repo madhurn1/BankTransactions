@@ -7,17 +7,22 @@ public class MoneyMarket extends Savings{
     private static final double LOYALTY_INT_RATE = 0.0475;
 
     public MoneyMarket(Profile holder, double balance){
-        super(holder,balance, true);       //loyal customer default
-        this.withdrawal=0;
+        super(holder, balance, true);       //loyal customer default
+        this.withdrawal = 0;
     }
+
+    public int getWithdrawals() {
+        return withdrawal;
+    }
+
     @Override
-    public double monthlyInterestCalculation(){
-        if (balance >=2000.0){
+    public double monthlyInterestCalculation() {
+        if (balance >= 2000.0){
             if(isloyal){
-                return balance * (LOYALTY_INT_RATE/12);
+                return balance * (LOYALTY_INT_RATE / 12);
             }
             else{
-                return balance * (INT_RATE/12);
+                return balance * (INT_RATE / 12);
             }
             return
         }
@@ -26,9 +31,10 @@ public class MoneyMarket extends Savings{
             return 0.0;
         }
     }
+
     @Override
     public double monthlyFeeCalculation(){
-        if(balance <2000.0 || withdrawal >3){
+        if(balance < 2000.0 || withdrawal > 3){
             return MONTHLY_FEE;
         }
         return 0.0;

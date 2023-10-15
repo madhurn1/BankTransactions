@@ -6,9 +6,13 @@ public class Savings extends Account {
     private static final double MONTHLY_FEE = 25.0;
     protected boolean isLoyal; //loyal customer status
 
-    public Savings(Profile holder, double header, boolean isLoyal) {
+    public Savings(Profile holder, double balance, boolean isLoyal) {
         super(holder, balance);
         this.isLoyal = isLoyal;
+    }
+
+    public boolean getLoyalty() {
+        return isLoyal;
     }
 
     public double monthlyInterestCalculation(){
