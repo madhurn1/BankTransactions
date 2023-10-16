@@ -68,7 +68,6 @@ public class AccountDatabase {
 
     public boolean close(Account account) {
         int foundAccount = find(account);
-        System.out.println("Print foundAccount" + foundAccount);
         if (foundAccount != NOT_FOUND) {
             for(int j=foundAccount; j<numAcct-1;j++) {
                 accounts[j] = accounts[j+1];

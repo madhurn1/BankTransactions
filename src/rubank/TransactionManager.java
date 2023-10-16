@@ -86,7 +86,6 @@ public class TransactionManager {
                 System.out.println("The account is already on the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount)){
-                System.out.println("FINISH LINE");
                 System.out.println("Account has been removed from the database!");}
             else
                 System.out.println("ERROR closing account");
@@ -196,22 +195,21 @@ public class TransactionManager {
      * @param token An array of tokens from the command-line arguments.
      */
     private void oCommand(String[] token){
+        int key = bankType(token[1]);
         if(token.length==1){
             System.out.println("Invalid Command!");
             return;
-        }
-        if(token.length>=2 && token.length<=4){
+        }if(token.length>=2 && token.length<=4){
             System.out.println("Account Database is empty!");
             return;
         }
         try{
-            Date dateInput = createDate(token[4]);
+            Date dateInput = createDate(token[4],key);
             if(dateInput == null){
-                System.out.println("Invalid tokens");
                 return;
             }
             Profile addProfile = new Profile(token[2],token[3],dateInput);
-            int key = bankType(token[1]);
+
             if(token[1].equals("CC")) {
                 int code = Integer.parseInt(token[6]);
                 String phraseLoc = checkCampusCode(code);
@@ -243,17 +241,22 @@ public class TransactionManager {
      * @return The Date object to be used.
      */
 
-    private Date createDate(String date){
+    private Date createDate(String date,int collegeIndication){
         Date addDate = new Date(date);
-//        System.out.println("is date valid key -" + addDate.isValid());
         if(addDate.isValid() == 1){
-            System.out.println(date + ": Invalid calendar date!");
+            System.out.println("DOB invalid: " + date + " not a valid calendar date!");
             return null;
         } else if (addDate.isValid() == 2) {
-            System.out.println(date + ": Event date must be a future date!");
+            System.out.println("DOB invalid: " + date + " cannot be today or a future day.");
             return null;
         } else if (addDate.isValid() == 3) {
             System.out.println(date + ": Event date must be within 6 months!");
+            return null;
+        } else if(collegeIndication == 2 && addDate.checkAge() >= 24){
+            System.out.println("DOB invalid: " + date + " over 24.");
+            return null;
+        } else if (addDate.checkAge()<=16) {
+            System.out.println("DOB invalid: " + date + " under 16.");
             return null;
         }
         return addDate;
@@ -264,18 +267,19 @@ public class TransactionManager {
      * @param token An array of tokens from the command-line arguments.
      */
     private void cCommand(String[] token){
+        int key = bankType(token[1]);
+
         if(token.length!=5){
             System.out.println("Invalid command format.");
             return;
         }
         try{
-            Date dateInput = createDate(token[4]);
+            Date dateInput = createDate(token[4],key);
 
             if (dateInput == null) return;
 
             Profile closeAccount = new Profile(token[2],token[3],dateInput);
 
-            int key = bankType(token[1]);
             System.out.println("check 1");
             if(key==1)
                 createChecking(closeAccount,0,CLOSE_INDICATION);
@@ -293,19 +297,15 @@ public class TransactionManager {
         }
     }
     private void dCommand(String[] token) {
+        int key = bankType(token[1]);
         if(token.length!=6){
             System.out.println("Invalid command format.");
             return;
         }
-        //You should reject the transaction if an invalid amount is
-        //entered. Below are the sample transactions.
-        //LOOK INTO THIS
         try{
-            Date dateInput = createDate(token[4]);
+            Date dateInput = createDate(token[4],key);
             if (dateInput == null) return;
             Profile depositAccount = new Profile(token[2],token[3],dateInput);
-            int key = bankType(token[1]);
-
             if(key==1)
                 createChecking(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
             else if(key==2)
@@ -321,6 +321,7 @@ public class TransactionManager {
         }
     }
     private void wCommand(String [] token){
+        int key = bankType(token[1]);
         if(token.length!=6){
             System.out.println("Invalid command format.");
             return;
@@ -329,10 +330,9 @@ public class TransactionManager {
         //entered. Below are the sample transactions.
         //LOOK INTO THIS
         try{
-            Date dateInput = createDate(token[4]);
+            Date dateInput = createDate(token[4],key);
             if (dateInput == null) return;
             Profile depositAccount = new Profile(token[2],token[3],dateInput);
-            int key = bankType(token[1]);
             if(key==1)
                 createChecking(depositAccount,Double.parseDouble(token[5]),WITHDRAW_INDICATION);
             else if(key==2)
@@ -360,21 +360,12 @@ public class TransactionManager {
     private void piCommand(){
         accountDatabase.printFeesAndInterests();
     }
-//
 //    /**
 //     * Command for printing the event calendar, with the events sorted by campus and then building/room.
 //     */
     private void ubCommand(){
         accountDatabase.printUpdatedBalances();
     }
-//
-//    /**
-//     * Command for printing the event calendar, with the events sorted by the department in the contact.
-//     */
-//    private void pdCommand(){
-//        calendar.printByDepa  rtment();
-//    }
-
     public static void main(String[] args){
     }
 }

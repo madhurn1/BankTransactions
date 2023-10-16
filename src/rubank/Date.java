@@ -30,11 +30,8 @@ public class Date implements Comparable<Date> {
     public Date(String date){
         StringTokenizer part = new StringTokenizer(date,"/");
         this.month= Integer.parseInt(part.nextToken());
-//        System.out.println(this.month);
         this.day = Integer.parseInt(part.nextToken());
-//        System.out.println(this.day);
         this.year = Integer.parseInt(part.nextToken());
-//        System.out.println(this.year);
     }
     /**
      Creates an instance of Date using the current date.
@@ -110,7 +107,6 @@ public class Date implements Comparable<Date> {
 
         if (this.month < FIRST_MONTH || this.month > LAST_MONTH || this.day < FIRST_DAY || this.year > NEXT_YEAR)
             return 1;
-
         int[] dayMonth = {0, ODD_DAYS_MONTH, DAYS_FEB + isLeapYear(),
                 ODD_DAYS_MONTH, EVEN_DAYS_MONTH, ODD_DAYS_MONTH,
                 EVEN_DAYS_MONTH, ODD_DAYS_MONTH, ODD_DAYS_MONTH,
@@ -119,25 +115,36 @@ public class Date implements Comparable<Date> {
         if (checkDate() && this.day > dayMonth[month]){
             return 1;
         }
-        if (checkDate())
+        if (checkDate() || checkToday())
             return 2;
-
-//        Calendar eDate = Calendar.getInstance();
-//        Calendar specificDate = Calendar.getInstance();
-//        specificDate.set(Calendar.YEAR, this.year);
-//        specificDate.set(Calendar.MONTH, (this.month)-1);
-//        specificDate.set(Calendar.DAY_OF_MONTH, this.day);
-//        eDate.add(Calendar.MONTH,6);
-//
-//        if(!eDate.after(specificDate)){ //6 months or more error statement
-//            return 3;
-//        }
-
         if(this.day <= dayMonth[month])
             return 0;
         else{
             return 1;
         }
+    }
+    public int checkAge(){
+        Calendar curr = Calendar.getInstance();
+        int age = curr.get(Calendar.YEAR) - this.year;
+
+        if(curr.get(Calendar.MONTH)+1 > this.month)
+            return age;
+        else if(curr.get(Calendar.MONTH)+1<this.month)
+            return age-1;
+        else{
+            if(curr.get(Calendar.DAY_OF_MONTH) < this.day){
+                return age-1;
+            }else{
+                return age;
+            }
+        }
+    }
+    private boolean checkToday(){
+        Date currDate = new Date();
+        if(this.year==currDate.year && this.month ==currDate.month && this.day==currDate.day){
+            return true;
+        }
+        return false;
     }
 
     /**
