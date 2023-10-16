@@ -51,7 +51,7 @@ public class MoneyMarket extends Savings{
         String writtenBalance = formatter.format(balance);
         String loyalty = "";
         if (isLoyal) loyalty += "::is loyal";
-        return "Money Market::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + "::Balance " + writtenBalance + loyalty + "withdrawal: " + withdrawal;
+        return "Money Market::" + holder.getFname() + " " + holder.getLname() + " " + holder.getDOB() + "::Balance " + writtenBalance + loyalty + "withdrawal: " + withdrawal;
     }
 
     @Override
