@@ -24,7 +24,7 @@ public class AccountDatabase {
 
     private int find(Account account) {
         for (int i = 0; i < numAcct; i++) {
-            if (accounts[i].equals(account)) {
+            if (accounts[i].compareTo(account) == 0) {
                 return i;
             }
         }
@@ -41,7 +41,7 @@ public class AccountDatabase {
 
     public boolean contains(Account account){
         for (int i = 0 ; i < numAcct; i++) {
-            if (accounts[i].equals(account)) {
+            if (accounts[i].compareTo(account) == 0) {
                 return true;
             }
         }
