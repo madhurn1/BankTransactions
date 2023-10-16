@@ -23,11 +23,13 @@ public class AccountDatabase {
     }
 
     private int find(Account account) {
+//        System.out.println("Enter Find");
         for (int i = 0; i < numAcct; i++) {
             if (accounts[i].compareTo(account) == 0) {
                 return i;
             }
         }
+//        System.out.println("Leaving Find");
         return NOT_FOUND;
     } //search for an account in the array
 
@@ -66,6 +68,7 @@ public class AccountDatabase {
 
     public boolean close(Account account) {
         int foundAccount = find(account);
+        System.out.println("Print foundAccount" + foundAccount);
         if (foundAccount != NOT_FOUND) {
             for(int j=foundAccount; j<numAcct-1;j++) {
                 accounts[j] = accounts[j+1];

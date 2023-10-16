@@ -38,4 +38,15 @@ public class CollegeChecking extends Checking {
         String writtenBalance = formatter.format(balance);
         return "Checking Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + "::Balance " + writtenBalance + "::" + campus.toString();
     }
+    public int compareTo(Account obj) {
+        String thisAccountType = this.toString();
+        String oAccType = obj.toString();
+        thisAccountType = thisAccountType.substring(0, thisAccountType.indexOf("::"));
+        oAccType = oAccType.substring(0, oAccType.indexOf("::"));
+        int accTypeCompare = thisAccountType.compareTo(oAccType);
+        if (accTypeCompare != 0) {
+            return accTypeCompare;
+        }
+        return this.holder.compareTo(obj.holder);
+    }
 }

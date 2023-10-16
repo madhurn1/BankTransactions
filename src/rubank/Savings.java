@@ -50,7 +50,11 @@ public class Savings extends Account {
 
     @Override
     public int compareTo(Account obj) {
-        int accTypeCompare = this.toString().compareTo(obj.toString());
+        String thisAccountType = this.toString();
+        String oAccType = obj.toString();
+        thisAccountType = thisAccountType.substring(0, thisAccountType.indexOf("::"));
+        oAccType = oAccType.substring(0, oAccType.indexOf("::"));
+        int accTypeCompare = thisAccountType.compareTo(oAccType);
         if (accTypeCompare != 0) {
             return accTypeCompare;
         }

@@ -8,7 +8,6 @@ import java.util.Scanner;
  */
 public class TransactionManager {
     private final AccountDatabase accountDatabase;
-
     private static final int OPEN_INDICATION = 1;
     private static final int CLOSE_INDICATION = 2;
     private static final int DEPOSIT_INDICATION = 3;
@@ -51,10 +50,10 @@ public class TransactionManager {
                     pCommand();
                     break;
                 case "PI":
-//                    pdCommand();
+                    piCommand();
                     break;
                 case "UB":
-//                    pdCommand();
+                    ubCommand();
                     break;
                 case "Q":
                     System.out.println("Transaction Manager is terminated.");
@@ -80,14 +79,12 @@ public class TransactionManager {
     }
     private void createChecking(Profile addProfile,double balance,int operation){
         Checking addAccount = new Checking(addProfile,balance);
-        System.out.println("Welcome createChecking");
         if(operation==OPEN_INDICATION){
             if(accountDatabase.open(addAccount))
                 return;
             else
                 System.out.println("The account is already on the database.");
         } else if(operation==CLOSE_INDICATION){
-            System.out.println("Welcome closeInd");
             if(accountDatabase.close(addAccount)){
                 System.out.println("FINISH LINE");
                 System.out.println("Account has been removed from the database!");}
@@ -224,7 +221,6 @@ public class TransactionManager {
                 Campus campCode= Campus.valueOf(phraseLoc);
                 createCollegeChecking(addProfile,Double.parseDouble(token[5]),campCode,OPEN_INDICATION);
             }
-            System.out.println("key - > "+ key);
             if(key==1)
                 createChecking(addProfile,Double.parseDouble(token[5]),OPEN_INDICATION);
             else if (key==2)
@@ -280,13 +276,12 @@ public class TransactionManager {
             Profile closeAccount = new Profile(token[2],token[3],dateInput);
 
             int key = bankType(token[1]);
-//            System.out.println("check 1");
-
-            if(key==1){
-//                System.out.println("Check 2");
-                createChecking(closeAccount,0,CLOSE_INDICATION);}
-            else if(key==2)
-                createCollegeChecking(closeAccount,0,null,CLOSE_INDICATION);
+            System.out.println("check 1");
+            if(key==1)
+                createChecking(closeAccount,0,CLOSE_INDICATION);
+            else if(key==2){
+                System.out.println("check 2");
+                createCollegeChecking(closeAccount,0, rubank.Campus.NEW_BRUNSWICK,CLOSE_INDICATION);}
             else if(key ==3)
                 createMoneyMarket(closeAccount,0,CLOSE_INDICATION);
             else if(key == 4)
@@ -298,7 +293,7 @@ public class TransactionManager {
         }
     }
     private void dCommand(String[] token) {
-        if(token.length!=5){
+        if(token.length!=6){
             System.out.println("Invalid command format.");
             return;
         }
@@ -314,7 +309,7 @@ public class TransactionManager {
             if(key==1)
                 createChecking(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
             else if(key==2)
-                createCollegeChecking(depositAccount,Double.parseDouble(token[5]),null,DEPOSIT_INDICATION);
+                createCollegeChecking(depositAccount,Double.parseDouble(token[5]), rubank.Campus.NEW_BRUNSWICK,DEPOSIT_INDICATION);
             else if(key ==3)
                 createMoneyMarket(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
             else if(key == 4)
@@ -326,7 +321,7 @@ public class TransactionManager {
         }
     }
     private void wCommand(String [] token){
-        if(token.length!=5){
+        if(token.length!=6){
             System.out.println("Invalid command format.");
             return;
         }
@@ -341,7 +336,7 @@ public class TransactionManager {
             if(key==1)
                 createChecking(depositAccount,Double.parseDouble(token[5]),WITHDRAW_INDICATION);
             else if(key==2)
-                createCollegeChecking(depositAccount,Double.parseDouble(token[5]),null,WITHDRAW_INDICATION);
+                createCollegeChecking(depositAccount,Double.parseDouble(token[5]),rubank.Campus.NEW_BRUNSWICK,WITHDRAW_INDICATION);
             else if(key ==3)
                 createMoneyMarket(depositAccount,Double.parseDouble(token[5]),WITHDRAW_INDICATION);
             else if(key == 4)
@@ -362,16 +357,16 @@ public class TransactionManager {
 //    /**
 //     * Command for printing the event calendar, with the events sorted by dates and then timeslots.
 //     */
-//    private void peCommand(){
-//        calendar.printByDate();
-//    }
+    private void piCommand(){
+        accountDatabase.printFeesAndInterests();
+    }
 //
 //    /**
 //     * Command for printing the event calendar, with the events sorted by campus and then building/room.
 //     */
-//    private void pcCommand(){
-//        calendar.printByCampus();
-//    }
+    private void ubCommand(){
+        accountDatabase.printUpdatedBalances();
+    }
 //
 //    /**
 //     * Command for printing the event calendar, with the events sorted by the department in the contact.
