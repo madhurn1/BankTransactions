@@ -41,7 +41,15 @@ public class Checking extends Account{
 
     @Override
     public int compareTo(Account obj) {
-        int accTypeCompare = this.toString().compareTo(obj.toString());
+//        int accTypeCompare = this.toString().substring(0,this.toString().indexOf("::")).compareTo(obj.toString());
+        String thisAccountType = this.toString();
+        String oAccType = obj.toString();
+
+        thisAccountType = thisAccountType.substring(0, thisAccountType.indexOf("::"));
+        oAccType = oAccType.substring(0, oAccType.indexOf("::"));
+
+        int accTypeCompare = this.toString().compareTo(oAccType);
+
         if (accTypeCompare != 0) {
             return accTypeCompare;
         }

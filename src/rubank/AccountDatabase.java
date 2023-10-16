@@ -12,15 +12,22 @@ public class AccountDatabase {
     private int numAcct; // number of accounts in the array
 
     private static final int NOT_FOUND = -1;
-
+    private static final int baseSize = 4;
     private static final int NUM_MONTHS = 12;
+    public AccountDatabase() {
+        accounts = new Account[baseSize];
+        numAcct = 0;
+    }
 
     private int find(Account account) {
+        System.out.println("In Find");
+        System.out.println("numACct ->" + numAcct);
         for (int i = 0; i < numAcct; i++) {
-            if (accounts[i].equals(account)) {
+            if (accounts[i].compareTo(account)==0) {
                 return i;
             }
         }
+        System.out.println("Cant Find it");
         return NOT_FOUND;
     } //search for an account in the array
 
@@ -34,7 +41,7 @@ public class AccountDatabase {
 
     public boolean contains(Account account){
         for (int i = 0 ; i < numAcct; i++) {
-            if (accounts[i].equals(account)) {
+            if (accounts[i].compareTo(account)==0) {
                 return true;
             }
         }
@@ -58,8 +65,11 @@ public class AccountDatabase {
     } //add a new account
 
     public boolean close(Account account) {
+        System.out.println("Enter close");
         int foundAccount = find(account);
+//        System.out.println("index - > "+ foundAccount);
         if (foundAccount != NOT_FOUND) {
+            accounts[numAcct] = null;
             for(int j=foundAccount; j<numAcct-1;j++) {
                 accounts[j] = accounts[j+1];
             }
