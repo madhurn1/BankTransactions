@@ -25,15 +25,14 @@ public class Profile implements Comparable<Profile> {
 
     @Override
     public int compareTo(Profile obj) {
-        int lastNCompare = this.lname.compareTo(obj.lname);
+        int lastNCompare = this.lname.compareToIgnoreCase(obj.lname);
         if (lastNCompare != 0) {
             return lastNCompare;
         }
-        int firstNCompare = this.fname.compareTo(obj.fname);
+        int firstNCompare = this.fname.compareToIgnoreCase(obj.fname);
         if (firstNCompare != 0) {
             return firstNCompare;
         }
         return this.dob.compareTo(obj.dob);
     }
 }
-

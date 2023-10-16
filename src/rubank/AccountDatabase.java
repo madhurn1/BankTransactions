@@ -23,15 +23,13 @@ public class AccountDatabase {
     }
 
     private int find(Account account) {
-//        System.out.println("Enter Find");
         for (int i = 0; i < numAcct; i++) {
             if (accounts[i].compareTo(account) == 0) {
                 return i;
             }
         }
-//        System.out.println("Leaving Find");
         return NOT_FOUND;
-    } //search for an account in the array
+    }
 
     private void grow(){
         Account[] moreAccounts = new Account[accounts.length + 4];
@@ -147,11 +145,11 @@ public class AccountDatabase {
             System.out.println("Account Database is empty!");
             return;
         }
-        System.out.println("*Accounts sorted by account type and profile.");
+        System.out.println("\n*Accounts sorted by account type and profile.");
         for(int i = 0; i < numAcct; i++){
             System.out.println(accounts[i]);
         }
-        System.out.println("*end of list.");
+        System.out.println("*end of list.\n");
 
 
     } // sort by account type and profile, then print
@@ -194,7 +192,7 @@ public class AccountDatabase {
             System.out.println("Account Database is empty!");
             return;
         }
-        System.out.println("*list of accounts with fee and monthly interest");
+        System.out.println("\n*list of accounts with fee and monthly interest");
         for (int i = 0; i < numAcct; i++)
         {
             double fee = calcMonthlyFee(accounts[i]);
@@ -204,7 +202,7 @@ public class AccountDatabase {
             String interestString = formatter.format(interest);
             System.out.println(accounts[i] + "::fee " + feeString + "::monthly interest " + interestString);
         }
-        System.out.println("*end of list.");
+        System.out.println("*end of list.\n");
     } //calculate interests/fees, then print
 
     public void printUpdatedBalances() {
@@ -212,7 +210,7 @@ public class AccountDatabase {
             System.out.println("Account Database is empty!");
             return;
         }
-        System.out.println("*list of accounts with fees and interests applied.");
+        System.out.println("\n*list of accounts with fees and interests applied.");
         for (int i = 0; i < numAcct; i++)
         {
             double fee = calcMonthlyFee(accounts[i]);
@@ -220,6 +218,6 @@ public class AccountDatabase {
             accounts[i].setBalance(accounts[i].getBalance() - fee + interest);
             System.out.println(accounts[i]);
         }
-        System.out.println("*end of list.");
+        System.out.println("*end of list.\n");
     } //apply the interests/fees, then print
 }

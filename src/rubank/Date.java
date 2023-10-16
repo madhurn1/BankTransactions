@@ -119,19 +119,8 @@ public class Date implements Comparable<Date> {
         if (checkDate() && this.day > dayMonth[month]){
             return 1;
         }
-        if (checkDate())
+        if (checkDate() || checkToday())
             return 2;
-
-//        Calendar eDate = Calendar.getInstance();
-//        Calendar specificDate = Calendar.getInstance();
-//        specificDate.set(Calendar.YEAR, this.year);
-//        specificDate.set(Calendar.MONTH, (this.month)-1);
-//        specificDate.set(Calendar.DAY_OF_MONTH, this.day);
-//        eDate.add(Calendar.MONTH,6);
-//
-//        if(!eDate.after(specificDate)){ //6 months or more error statement
-//            return 3;
-//        }
 
         if(this.day <= dayMonth[month])
             return 0;
@@ -164,6 +153,28 @@ public class Date implements Comparable<Date> {
                 return false;
             }
         }
+    }
+
+    public int checkAge(){
+        Calendar curr = Calendar.getInstance();
+        int age = curr.get(Calendar.YEAR) - this.year;
+
+        if(curr.get(Calendar.MONTH)+1 > this.month)
+            return age;
+        else if(curr.get(Calendar.MONTH)+1<this.month)
+            return age-1;
+        else{
+            if(curr.get(Calendar.DAY_OF_MONTH) < this.day){
+                return age-1;
+            }else{
+                return age;
+            }
+        }
+    }
+
+    private boolean checkToday(){
+        Date currDate = new Date();
+        return this.year == currDate.year && this.month == currDate.month && this.day == currDate.day;
     }
 
     /**

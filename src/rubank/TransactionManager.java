@@ -30,7 +30,8 @@ public class TransactionManager {
             String fullCommand = S.nextLine().trim();//read + trim
             if(fullCommand.isEmpty())//blank line
                 continue;
-            String result = fullCommand .replaceAll("\s+", " ");
+            String result = fullCommand.replaceAll("\t+", " ");
+            result = result.replaceAll(" +", " ");
             String[] token = result.split(" ");
             String command = token[0];
             switch(command){
@@ -63,29 +64,26 @@ public class TransactionManager {
             }
         }
     }
-    private int bankType(String entry) {
-        if (entry.equals("C"))
-            return 1;
-        else if (entry.equals("CC")) {
-            return 2;
-        }
-        else if (entry.equals("MM"))
-            return 3;
 
-        else if (entry.equals("S"))
-            return 4;
-        else
-            return 5;
+    private int bankType(String entry) {
+        return switch (entry) {
+            case "C" -> 1;
+            case "CC" -> 2;
+            case "MM" -> 3;
+            case "S" -> 4;
+            default -> 5;
+        };
     }
+
     private void createChecking(Profile addProfile,double balance,int operation){
         Checking addAccount = new Checking(addProfile,balance);
-        if(operation==OPEN_INDICATION){
-            if(accountDatabase.open(addAccount))
-                return;
+        if(operation == OPEN_INDICATION){
+            if (accountDatabase.open(addAccount))
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) opened.");
             else
-                System.out.println("The account is already on the database.");
-        } else if(operation==CLOSE_INDICATION){
-            if(accountDatabase.close(addAccount)){
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is already in the database.");
+        } else if (operation==CLOSE_INDICATION){
+            if (accountDatabase.close(addAccount)) {
                 System.out.println("FINISH LINE");
                 System.out.println("Account has been removed from the database!");}
             else
@@ -102,13 +100,14 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+
     private void createCollegeChecking(Profile addProfile,double balance, Campus code,int operation){
         CollegeChecking addAccount = new CollegeChecking(addProfile,balance,code);
         if(operation==OPEN_INDICATION){
             if(accountDatabase.open(addAccount))
-                return;
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) opened.");
             else
-                System.out.println("The account is already on the database.");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) is already in the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
                 System.out.println("Account has been removed from the database!");
@@ -126,13 +125,17 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+
     private void createMoneyMarket(Profile addProfile,double balance,int operation){
         MoneyMarket addAccount = new MoneyMarket(addProfile,balance);
-        if(operation==OPEN_INDICATION){
-            if(accountDatabase.open(addAccount))
-                return;
+        if( operation == OPEN_INDICATION ){
+            if (balance < 2000) {
+                System.out.println("Minimum of $2000 to open a Money Market account.");
+            }
+            else if(accountDatabase.open(addAccount))
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) opened.");
             else
-                System.out.println("The account is already on the database.");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) is already in the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
                 System.out.println("Account has been removed from the database!");
@@ -150,18 +153,15 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+
     private void createSavings(Profile addProfile,double balance, int loyal,int operation){
-        boolean loyalKey=false;//check default val
-        if(loyal==1)
-            loyalKey=true;
-        else
-            loyalKey=false;
+        boolean loyalKey = loyal == 1;
         Savings addAccount = new Savings(addProfile, balance, loyalKey);
-        if(operation==OPEN_INDICATION){
+        if(operation == OPEN_INDICATION){
             if(accountDatabase.open(addAccount))
-                return;
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) opened.");
             else
-                System.out.println("The account is already on the database.");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) is already in the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
                 System.out.println("Account has been removed from the database!");
@@ -179,6 +179,7 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+
     private String checkCampusCode(int campCode){
         if(campCode==0){
             return "NEW_BRUNSWICK";
@@ -191,47 +192,51 @@ public class TransactionManager {
             return "INVALID";
         }
     }
+
     /**
      * Command for adding an Event to the Event Calendar.
      * @param token An array of tokens from the command-line arguments.
      */
-    private void oCommand(String[] token){
-        if(token.length==1){
+    private void oCommand(String[] token) {
+        if (token.length == 1) {
             System.out.println("Invalid Command!");
-            return;
         }
-        if(token.length>=2 && token.length<=4){
-            System.out.println("Account Database is empty!");
-            return;
+        else if (token.length >= 2 && token.length <= 5) {
+            System.out.println("Missing data for opening an account.");
         }
-        try{
-            Date dateInput = createDate(token[4]);
-            if(dateInput == null){
+        else try {
+                int key = bankType(token[1]);
+            Date dateInput = createDate(token[4], key);
+            /*if (dateInput == null) {
                 System.out.println("Invalid tokens");
                 return;
-            }
-            Profile addProfile = new Profile(token[2],token[3],dateInput);
-            int key = bankType(token[1]);
-            if(token[1].equals("CC")) {
-                int code = Integer.parseInt(token[6]);
-                String phraseLoc = checkCampusCode(code);
-                if (phraseLoc.equals("INVALID")) {
-                    System.out.println("Invalid Campus Code");
-                }
-                Campus campCode= Campus.valueOf(phraseLoc);
-                createCollegeChecking(addProfile,Double.parseDouble(token[5]),campCode,OPEN_INDICATION);
-            }
-            if(key==1)
-                createChecking(addProfile,Double.parseDouble(token[5]),OPEN_INDICATION);
-            else if (key==2)
+            }*/
+            Profile addProfile = new Profile(token[2], token[3], dateInput);
+
+            double balance;
+            try { balance = Double.parseDouble(token[5]);
+            } catch (Exception e) {
+                System.out.println("Not a valid amount.");
                 return;
-            else if(key ==3)
-                createMoneyMarket(addProfile,Double.parseDouble(token[5]),OPEN_INDICATION);
-            else if(key == 4)
+            }
+            if (balance <= 0) {
+                System.out.println("Initial deposit cannot be 0 or negative.");
+                return;
+            }
+            if (key == 2) {
+                String phraseLoc = checkCampusCode(Integer.parseInt(token[6]));
+                if (phraseLoc.equals("INVALID")) {
+                    System.out.println("Invalid campus code.");
+                }
+                else createCollegeChecking(addProfile, balance, Campus.valueOf(phraseLoc), OPEN_INDICATION);
+            }
+            if (key == 1)
+                createChecking(addProfile, Double.parseDouble(token[5]), OPEN_INDICATION);
+            else if (key == 3)
+                createMoneyMarket(addProfile, Double.parseDouble(token[5]), OPEN_INDICATION);
+            else if (key == 4)
                 createSavings(addProfile, Double.parseDouble(token[5]), Integer.parseInt(token[6]), OPEN_INDICATION);
-            else
-                System.out.println("Not valid Bank Type");//specify
-        } catch (Exception e){
+            } catch(Exception e){
             System.out.println("Error with adding an account.");
         }
     }
@@ -243,17 +248,22 @@ public class TransactionManager {
      * @return The Date object to be used.
      */
 
-    private Date createDate(String date){
+    private Date createDate(String date,int collegeIndication){
         Date addDate = new Date(date);
-//        System.out.println("is date valid key -" + addDate.isValid());
         if(addDate.isValid() == 1){
-            System.out.println(date + ": Invalid calendar date!");
+            System.out.println("DOB invalid: " + date + " not a valid calendar date!");
             return null;
         } else if (addDate.isValid() == 2) {
-            System.out.println(date + ": Event date must be a future date!");
+            System.out.println("DOB invalid: " + date + " cannot be today or a future day.");
             return null;
         } else if (addDate.isValid() == 3) {
             System.out.println(date + ": Event date must be within 6 months!");
+            return null;
+        } else if(collegeIndication == 2 && addDate.checkAge() >= 24){
+            System.out.println("DOB invalid: " + date + " over 24.");
+            return null;
+        } else if (addDate.checkAge()<=16) {
+            System.out.println("DOB invalid: " + date + " under 16.");
             return null;
         }
         return addDate;
@@ -269,13 +279,10 @@ public class TransactionManager {
             return;
         }
         try{
-            Date dateInput = createDate(token[4]);
-
-            if (dateInput == null) return;
-
-            Profile closeAccount = new Profile(token[2],token[3],dateInput);
-
             int key = bankType(token[1]);
+            Date dateInput = createDate(token[4], key);
+            if (dateInput == null) return;
+            Profile closeAccount = new Profile(token[2],token[3],dateInput);
             System.out.println("check 1");
             if(key==1)
                 createChecking(closeAccount,0,CLOSE_INDICATION);
@@ -297,15 +304,11 @@ public class TransactionManager {
             System.out.println("Invalid command format.");
             return;
         }
-        //You should reject the transaction if an invalid amount is
-        //entered. Below are the sample transactions.
-        //LOOK INTO THIS
         try{
-            Date dateInput = createDate(token[4]);
+            int key = bankType(token[1]);
+            Date dateInput = createDate(token[4], key);
             if (dateInput == null) return;
             Profile depositAccount = new Profile(token[2],token[3],dateInput);
-            int key = bankType(token[1]);
-
             if(key==1)
                 createChecking(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
             else if(key==2)
@@ -329,10 +332,10 @@ public class TransactionManager {
         //entered. Below are the sample transactions.
         //LOOK INTO THIS
         try{
-            Date dateInput = createDate(token[4]);
+            int key = bankType(token[1]);
+            Date dateInput = createDate(token[4], key);
             if (dateInput == null) return;
             Profile depositAccount = new Profile(token[2],token[3],dateInput);
-            int key = bankType(token[1]);
             if(key==1)
                 createChecking(depositAccount,Double.parseDouble(token[5]),WITHDRAW_INDICATION);
             else if(key==2)
@@ -372,7 +375,7 @@ public class TransactionManager {
 //     * Command for printing the event calendar, with the events sorted by the department in the contact.
 //     */
 //    private void pdCommand(){
-//        calendar.printByDepa  rtment();
+//        calendar.printByDepartment();
 //    }
 
     public static void main(String[] args){

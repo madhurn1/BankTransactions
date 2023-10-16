@@ -36,13 +36,13 @@ public class CollegeChecking extends Checking {
     public String toString() {
         DecimalFormat formatter = (DecimalFormat) DecimalFormat.getCurrencyInstance();
         String writtenBalance = formatter.format(balance);
-        return "Checking Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + "::Balance " + writtenBalance + "::" + campus.toString();
+        return "College Checking::" + holder.getFname() + " " + holder.getLname() + " " + holder.getDOB() + "::Balance " + writtenBalance + "::" + campus.toString();
     }
     public int compareTo(Account obj) {
         String thisAccountType = this.toString();
         String oAccType = obj.toString();
-        thisAccountType = thisAccountType.substring(0, thisAccountType.indexOf("::"));
-        oAccType = oAccType.substring(0, oAccType.indexOf("::"));
+        thisAccountType = thisAccountType.substring(0, 1);
+        oAccType = oAccType.substring(0, 1);
         int accTypeCompare = thisAccountType.compareTo(oAccType);
         if (accTypeCompare != 0) {
             return accTypeCompare;

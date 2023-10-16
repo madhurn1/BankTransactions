@@ -45,7 +45,7 @@ public class Savings extends Account {
         String writtenBalance = formatter.format(balance);
         String loyalty = "";
         if (isLoyal) loyalty += "::is loyal";
-        return "Savings::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + "::Balance " + writtenBalance + loyalty;
+        return "Savings::" + holder.getFname() + " " + holder.getLname() + " " + holder.getDOB() + "::Balance " + writtenBalance + loyalty;
     }
 
     @Override
