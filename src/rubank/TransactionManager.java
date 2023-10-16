@@ -84,18 +84,23 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is already in the database.");
         } else if (operation==CLOSE_INDICATION){
             if (accountDatabase.close(addAccount)) {
-                System.out.println("FINISH LINE");
-                System.out.println("Account has been removed from the database!");}
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) has been closed.");
+            }
             else
-                System.out.println("ERROR closing account");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is not in the database.");
         } else if (operation==DEPOSIT_INDICATION) {
-            accountDatabase.deposit(addAccount);
-            System.out.println("Account has been deposited into!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is not in the database.");
+
+            } else {
+                accountDatabase.deposit(addAccount);
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Deposit - balance updated.");
+            }
         } else if (operation==WITHDRAW_INDICATION) {
             if(accountDatabase.withdraw(addAccount))
-                System.out.println("Money has been withdrawn");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Withdraw - balance updated.");
             else
-                System.out.println("Error withdrawing!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Withdraw - insufficient fund.");
         } else{
             System.out.println("The account is already on the database.");
         }
@@ -110,17 +115,22 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) is already in the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
-                System.out.println("Account has been removed from the database!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) has been closed.");
             else
-                System.out.println("ERROR closing account");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) is not in the database.");
         } else if (operation==DEPOSIT_INDICATION) {
-            accountDatabase.deposit(addAccount);
-            System.out.println("Account has been deposited into!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) is not in the database.");
+
+            } else {
+                accountDatabase.deposit(addAccount);
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Deposit - balance updated.");
+            }
         } else if (operation==WITHDRAW_INDICATION) {
             if(accountDatabase.withdraw(addAccount))
-                System.out.println("Money has been withdrawn");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Withdraw - balance updated.");
             else
-                System.out.println("Error withdrawing!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Withdraw - insufficient fund.");
         } else{
             System.out.println("The account is already on the database.");
         }
@@ -138,17 +148,22 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) is already in the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
-                System.out.println("Account has been removed from the database!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) has been closed.");
             else
-                System.out.println("ERROR closing account");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) is not in the database.");
         } else if (operation==DEPOSIT_INDICATION) {
-            accountDatabase.deposit(addAccount);
-            System.out.println("Account has been deposited into!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) is not in the database.");
+
+            } else {
+                accountDatabase.deposit(addAccount);
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Deposit - balance updated.");
+            }
         } else if (operation==WITHDRAW_INDICATION) {
             if(accountDatabase.withdraw(addAccount))
-                System.out.println("Money has been withdrawn");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Withdraw - balance updated.");
             else
-                System.out.println("Error withdrawing!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Withdraw - insufficient fund.");
         } else{
             System.out.println("The account is already on the database.");
         }
@@ -164,17 +179,22 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) is already in the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
-                System.out.println("Account has been removed from the database!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) has been closed.");
             else
-                System.out.println("ERROR closing account");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) is not in the database.");
         } else if (operation==DEPOSIT_INDICATION) {
-            accountDatabase.deposit(addAccount);
-            System.out.println("Account has been deposited into!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) is not in the database.");
+
+            } else {
+                accountDatabase.deposit(addAccount);
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Deposit - balance updated.");
+            }
         } else if (operation==WITHDRAW_INDICATION) {
             if(accountDatabase.withdraw(addAccount))
-                System.out.println("Money has been withdrawn");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Withdraw - balance updated.");
             else
-                System.out.println("Error withdrawing!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Withdraw - insufficient fund.");
         } else{
             System.out.println("The account is already on the database.");
         }
@@ -205,14 +225,10 @@ public class TransactionManager {
             System.out.println("Missing data for opening an account.");
         }
         else try {
-                int key = bankType(token[1]);
+            int key = bankType(token[1]);
             Date dateInput = createDate(token[4], key);
-            /*if (dateInput == null) {
-                System.out.println("Invalid tokens");
-                return;
-            }*/
+            if (dateInput == null) return;
             Profile addProfile = new Profile(token[2], token[3], dateInput);
-
             double balance;
             try { balance = Double.parseDouble(token[5]);
             } catch (Exception e) {
@@ -262,7 +278,7 @@ public class TransactionManager {
         } else if(collegeIndication == 2 && addDate.checkAge() >= 24){
             System.out.println("DOB invalid: " + date + " over 24.");
             return null;
-        } else if (addDate.checkAge()<=16) {
+        } else if (addDate.checkAge()<16) {
             System.out.println("DOB invalid: " + date + " under 16.");
             return null;
         }
@@ -275,19 +291,20 @@ public class TransactionManager {
      */
     private void cCommand(String[] token){
         if(token.length!=5){
-            System.out.println("Invalid command format.");
+            System.out.println("Missing data for closing an account.");
             return;
         }
         try{
             int key = bankType(token[1]);
-            Date dateInput = createDate(token[4], key);
-            if (dateInput == null) return;
+            Date dateInput = new Date(token[4]);
+            if (dateInput.isValid() == 2) {
+                System.out.println("DOB invalid: " + dateInput + " cannot be today or a future day.");
+                return;
+            }
             Profile closeAccount = new Profile(token[2],token[3],dateInput);
-            System.out.println("check 1");
             if(key==1)
                 createChecking(closeAccount,0,CLOSE_INDICATION);
             else if(key==2){
-                System.out.println("check 2");
                 createCollegeChecking(closeAccount,0, rubank.Campus.NEW_BRUNSWICK,CLOSE_INDICATION);}
             else if(key ==3)
                 createMoneyMarket(closeAccount,0,CLOSE_INDICATION);
@@ -306,8 +323,11 @@ public class TransactionManager {
         }
         try{
             int key = bankType(token[1]);
-            Date dateInput = createDate(token[4], key);
-            if (dateInput == null) return;
+            Date dateInput = new Date(token[4]);
+            if (dateInput.isValid() == 2) {
+                System.out.println("DOB invalid: " + dateInput + " cannot be today or a future day.");
+                return;
+            }
             Profile depositAccount = new Profile(token[2],token[3],dateInput);
             if(key==1)
                 createChecking(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);

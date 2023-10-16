@@ -31,6 +31,15 @@ public class AccountDatabase {
         return NOT_FOUND;
     }
 
+    private boolean openFind(Account account) {
+        for (int i = 0; i < numAcct; i++) {
+            if (accounts[i].toString().substring(0, 1).compareTo(account.toString().substring(0, 1)) == 0) {
+                if (accounts[i].getHolder().compareTo(account.getHolder()) == 0) return true;
+            }
+        }
+        return false;
+    }
+
     private void grow(){
         Account[] moreAccounts = new Account[accounts.length + 4];
         for (int i = 0; i < numAcct; i++) {
@@ -54,7 +63,7 @@ public class AccountDatabase {
             numAcct++;
             return true;
         }
-        if (find(account) != NOT_FOUND) {
+        if (openFind(account)) {
             return false;
         }
         if (numAcct == accounts.length)
@@ -66,7 +75,6 @@ public class AccountDatabase {
 
     public boolean close(Account account) {
         int foundAccount = find(account);
-        System.out.println("Print foundAccount" + foundAccount);
         if (foundAccount != NOT_FOUND) {
             for(int j=foundAccount; j<numAcct-1;j++) {
                 accounts[j] = accounts[j+1];
