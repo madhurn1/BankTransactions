@@ -9,14 +9,6 @@ public class Checking extends Account{
         super(holder, balance);
     }
 
-    public double getInterestRate() {
-        return INT_RATE;
-    }
-
-    public double getMonthlyFee() {
-        return MONTHLY_FEE;
-    }
-
     @Override
     public double monthlyInterest() {
         return balance * (INT_RATE / 12);
@@ -24,7 +16,7 @@ public class Checking extends Account{
 
     @Override
     public double monthlyFee() {
-        if (balance >= 1000.0){
+        if (balance >= 1000.0) {
             return 0.0;
         }
         else {
@@ -36,7 +28,7 @@ public class Checking extends Account{
     public String toString() {
         DecimalFormat formatter = (DecimalFormat) DecimalFormat.getCurrencyInstance();
         String writtenBalance = formatter.format(balance);
-        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + ":: Balance $" + writtenBalance;
+        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + "::Balance " + writtenBalance;
     }
 
     @Override

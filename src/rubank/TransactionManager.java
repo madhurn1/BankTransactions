@@ -7,7 +7,7 @@ import java.util.Scanner;
  * @author Dany Chucri, Madhur Nutulapati
  */
 public class TransactionManager {
-    private AccountDatabase accountDatabase;
+    private final AccountDatabase accountDatabase;
 
     private static final int OPEN_INDICATION = 1;
     private static final int CLOSE_INDICATION = 2;

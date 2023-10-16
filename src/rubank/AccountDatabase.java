@@ -11,23 +11,23 @@ public class AccountDatabase {
 
     private int numAcct; // number of accounts in the array
 
-    private static final int NOT_FOUND = -1;
     private static final int baseSize = 4;
+
+    private static final int NOT_FOUND = -1;
+
     private static final int NUM_MONTHS = 12;
+
     public AccountDatabase() {
         accounts = new Account[baseSize];
         numAcct = 0;
     }
 
     private int find(Account account) {
-        System.out.println("In Find");
-        System.out.println("numACct ->" + numAcct);
         for (int i = 0; i < numAcct; i++) {
-            if (accounts[i].compareTo(account)==0) {
+            if (accounts[i].compareTo(account) == 0) {
                 return i;
             }
         }
-        System.out.println("Cant Find it");
         return NOT_FOUND;
     } //search for an account in the array
 
@@ -41,7 +41,7 @@ public class AccountDatabase {
 
     public boolean contains(Account account){
         for (int i = 0 ; i < numAcct; i++) {
-            if (accounts[i].compareTo(account)==0) {
+            if (accounts[i].compareTo(account) == 0) {
                 return true;
             }
         }
@@ -65,11 +65,8 @@ public class AccountDatabase {
     } //add a new account
 
     public boolean close(Account account) {
-        System.out.println("Enter close");
         int foundAccount = find(account);
-//        System.out.println("index - > "+ foundAccount);
         if (foundAccount != NOT_FOUND) {
-            accounts[numAcct] = null;
             for(int j=foundAccount; j<numAcct-1;j++) {
                 accounts[j] = accounts[j+1];
             }
@@ -157,50 +154,36 @@ public class AccountDatabase {
     } // sort by account type and profile, then print
 
     private double calcMonthlyFee(Account account) {
-        double fee = 0;
         if (account instanceof CollegeChecking acc) {
-            fee = 0;
+            return acc.monthlyFee();
         }
         else if (account instanceof Checking acc) {
-            if (acc.getBalance() >= 1000)
-                fee = 0;
-            else fee = acc.getMonthlyFee();
+            return acc.monthlyFee();
         }
         else if (account instanceof MoneyMarket acc) {
-            if (acc.getBalance() >= 2000) {
-                fee = 0;
-            }
-            else fee = acc.getMonthlyFee();
+            return acc.monthlyFee();
         }
         else if (account instanceof Savings acc) {
-            if (acc.getBalance() >= 500) {
-                fee = 0;
-            }
-            else fee = acc.getMonthlyFee();
+            return acc.monthlyFee();
         }
-
-        return fee;
+        return 0;
     }
 
     private double calcMonthlyInterest(Account account) {
-        double interest = 0;
-        if (account instanceof Checking acc) {
-            interest = acc.getBalance() * (acc.getInterestRate() / NUM_MONTHS);
+        if (account instanceof CollegeChecking acc) {
+            return acc.monthlyInterest();
+        }
+        else if (account instanceof Checking acc) {
+            return acc.monthlyInterest();
         }
         else if (account instanceof MoneyMarket acc) {
-            if (acc.getLoyalty()) {
-                interest = acc.getBalance() * (acc.getLoyaltyIntRate() / NUM_MONTHS);
-            }
-            else interest = acc.getBalance() * (acc.getInterestRate() / NUM_MONTHS);
+            return acc.monthlyInterest();
         }
         else if (account instanceof Savings acc) {
-            if (acc.getLoyalty()) {
-                interest = acc.getBalance() * (acc.getLoyaltyIntRate() / NUM_MONTHS);
-            }
-            else interest = acc.getBalance() * (acc.getInterestRate() / NUM_MONTHS);
+            return acc.monthlyInterest();
         }
+        return 0;
 
-        return interest;
     }
 
     public void printFeesAndInterests() {
@@ -214,8 +197,8 @@ public class AccountDatabase {
             double fee = calcMonthlyFee(accounts[i]);
             double interest = calcMonthlyInterest(accounts[i]);
             DecimalFormat formatter = (DecimalFormat) DecimalFormat.getCurrencyInstance();
-            String feeString = "$" + formatter.format(fee);
-            String interestString = "$" + formatter.format(interest);
+            String feeString = formatter.format(fee);
+            String interestString = formatter.format(interest);
             System.out.println(accounts[i] + "::fee " + feeString + "::monthly interest " + interestString);
         }
         System.out.println("*end of list.");

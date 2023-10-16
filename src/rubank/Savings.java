@@ -13,18 +13,6 @@ public class Savings extends Account {
         this.isLoyal = isLoyal;
     }
 
-    public double getInterestRate() {
-        return INT_RATE;
-    }
-
-    public double getLoyaltyIntRate() {
-        return LOYALTY_INT_RATE;
-    }
-
-    public double getMonthlyFee() {
-        return MONTHLY_FEE;
-    }
-
     public boolean getLoyalty() {
         return isLoyal;
     }
@@ -32,18 +20,18 @@ public class Savings extends Account {
     @Override
     public double monthlyInterest(){
         double monthlyInt;
-        if(isLoyal){
-            monthlyInt=balance * (LOYALTY_INT_RATE/12);
+        if (isLoyal) {
+            monthlyInt = balance * (LOYALTY_INT_RATE / 12);
         }
         else {
-            monthlyInt = balance * (INT_RATE/12);
+            monthlyInt = balance * (INT_RATE / 12);
         }
         return monthlyInt;
     }
 
     @Override
     public double monthlyFee(){
-        if (balance >= 500.0){
+        if (balance >= 500.0) {
             return 0.0;
         }
         else{
@@ -57,7 +45,7 @@ public class Savings extends Account {
         String writtenBalance = formatter.format(balance);
         String loyalty = "";
         if (isLoyal) loyalty += "::is loyal";
-        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + ":: Balance $" + writtenBalance + loyalty;
+        return "Savings::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + "::Balance " + writtenBalance + loyalty;
     }
 
     @Override

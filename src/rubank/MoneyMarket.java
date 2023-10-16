@@ -27,23 +27,19 @@ public class MoneyMarket extends Savings{
 
     @Override
     public double monthlyInterest() {
-        if (balance >= 2000.0){
-            if(isLoyal){
-                return balance * (LOYALTY_INT_RATE / 12);
-            }
-            else{
-                return balance * (INT_RATE / 12);
-            }
+        double monthlyInt;
+        if (isLoyal) {
+            monthlyInt = balance * (LOYALTY_INT_RATE / 12);
         }
-        else{
-            isLoyal = false;
-            return 0.0;
+        else {
+            monthlyInt = balance * (INT_RATE / 12);
         }
+        return monthlyInt;
     }
 
     @Override
     public double monthlyFee(){
-        if(balance < 2000.0 || withdrawal > 3){
+        if (balance < 2000.0) {
             return MONTHLY_FEE;
         }
         return 0.0;
@@ -55,6 +51,15 @@ public class MoneyMarket extends Savings{
         String writtenBalance = formatter.format(balance);
         String loyalty = "";
         if (isLoyal) loyalty += "::is loyal";
-        return "Checking::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + ":: Balance $" + writtenBalance + loyalty + "withdrawal: " + withdrawal;
+        return "Money Market::" + holder.getFname() + " " + holder.getLname() + holder.getDOB() + "::Balance " + writtenBalance + loyalty + "withdrawal: " + withdrawal;
+    }
+
+    @Override
+    public int compareTo(Account obj) {
+        int accTypeCompare = this.toString().compareTo(obj.toString());
+        if (accTypeCompare != 0) {
+            return accTypeCompare;
+        }
+        return this.holder.compareTo(obj.holder);
     }
 }
