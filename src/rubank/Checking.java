@@ -59,8 +59,8 @@ public class Checking extends Account{
     public int compareTo(Account obj) {
         String thisAccountType = this.toString();
         String oAccType = obj.toString();
-        thisAccountType = thisAccountType.substring(0, 1);
-        oAccType = oAccType.substring(0, 1);
+        thisAccountType = thisAccountType.substring(0, thisAccountType.indexOf("::"));
+        oAccType = oAccType.substring(0, oAccType.indexOf("::"));
         int accTypeCompare = thisAccountType.compareTo(oAccType);
         if (accTypeCompare != 0) {
             return accTypeCompare;

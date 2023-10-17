@@ -3,9 +3,7 @@ package rubank;
 import java.text.DecimalFormat;
 
 /**
- * Holds a list of Account objects to form an account database.
- * Contains an accounts array as well as a number of accounts tracker.
- * Size of the accounts array can increase if needed but not decrease.
+ An Account Database to be held at a given location.
  @author Dany Chucri, Madhur Nutulapati
  */
 public class AccountDatabase {
@@ -19,19 +17,11 @@ public class AccountDatabase {
 
     private static final int NUM_MONTHS = 12;
 
-    /**
-     Creates an instance of EventCalendar with a size of 0.
-     */
     public AccountDatabase() {
         accounts = new Account[baseSize];
         numAcct = 0;
     }
-    /**
-     * Searches for a specified account object in the list.
-     * Uses the criterion specified in account's compareTo() method.
-     * @param account The account to be searched for.
-     * @return An integer representing the position of the Account in the AccountDatabase.
-     */
+
     private int find(Account account) {
         for (int i = 0; i < numAcct; i++) {
             if (accounts[i].compareTo(account) == 0) {
@@ -40,9 +30,16 @@ public class AccountDatabase {
         }
         return NOT_FOUND;
     }
-    /**
-     * Increases the capacity of the Accounts array by adding 4 account slots.
-     */
+
+    private boolean openFind(Account account) {
+        for (int i = 0; i < numAcct; i++) {
+            if (accounts[i].toString().substring(0, 1).compareTo(account.toString().substring(0, 1)) == 0) {
+                if (accounts[i].getHolder().compareTo(account.getHolder()) == 0) return true;
+            }
+        }
+        return false;
+    }
+
     private void grow(){
         Account[] moreAccounts = new Account[accounts.length + 4];
         for (int i = 0; i < numAcct; i++) {
@@ -51,11 +48,6 @@ public class AccountDatabase {
         accounts = moreAccounts;
     } //increase the capacity by 4
 
-    /**
-     * Checks if the specified Account is already in the AccountDatabase.
-     * @param account Account to be looked for.
-     * @return True if the Account is in the AccountDatabase, otherwise false.
-     */
     public boolean contains(Account account){
         for (int i = 0 ; i < numAcct; i++) {
             if (accounts[i].compareTo(account) == 0) {
@@ -65,18 +57,13 @@ public class AccountDatabase {
         return false;
     } //overload if necessary
 
-    /**
-     * Adds a given Account Object to the Accounts array of AccountDatabase.
-     * @param account The account to be opened.
-     * @return True if the account was added, otherwise false.
-     */
     public boolean open(Account account) {
         if (numAcct == 0) {
             accounts[0] = account;
             numAcct++;
             return true;
         }
-        if (find(account) != NOT_FOUND) {
+        if (openFind(account)) {
             return false;
         }
         if (numAcct == accounts.length)
@@ -86,11 +73,6 @@ public class AccountDatabase {
         return true;
     } //add a new account
 
-    /**
-     * Closes/removes a specified Account Object from the accounts list.
-     * @param account The account to be closed.
-     * @return True if the account was closed, otherwise false.
-     */
     public boolean close(Account account) {
         int foundAccount = find(account);
         if (foundAccount != NOT_FOUND) {
@@ -104,11 +86,7 @@ public class AccountDatabase {
             return false;
         }
     } //remove the given account
-    /**
-     * Withdraws a certain amount from a specified Account Object from the accounts list.
-     * @param account The account to withdraw from.
-     * @return True if the withdraw operation happened successfully, otherwise false.
-     */
+
     public boolean withdraw(Account account) {
         int foundAccount = find(account);
         if (foundAccount != NOT_FOUND) {
@@ -116,14 +94,14 @@ public class AccountDatabase {
             if (newBalance < 0) return false;
             accounts[foundAccount].setBalance(newBalance);
             if (accounts[foundAccount] instanceof MoneyMarket acc) {
-                double mmBalance = acc.getBalance();
-                if (mmBalance < 0) {
-                    acc.setBalance(acc.getBalance() + account.getBalance());
-                    return false;
-                }
-                else {
-                    acc.setBalance(mmBalance);
-                }
+                    double mmBalance = acc.getBalance();
+                    if (mmBalance < 0) {
+                        acc.setBalance(acc.getBalance() + account.getBalance());
+                        return false;
+                    }
+                    else {
+                        acc.setBalance(mmBalance);
+                    }
                 if (newBalance < 2000 && (acc.getLoyalty())) {
                     acc.setLoyalty(false);
                 }
@@ -132,11 +110,8 @@ public class AccountDatabase {
             return true;
         }
         return false;
-    }//false if insufficient fund//false if insufficient fund
-    /**
-     * responsible for processing a deposit into a specified account from the accounts list.
-     * @param account The account to deposit into.
-     */
+    }//false if insufficient fund
+
     public void deposit(Account account) {
         int foundAccount = find(account);
         if (foundAccount != NOT_FOUND) {
@@ -150,20 +125,17 @@ public class AccountDatabase {
         }
     }
 
-    /**
-     * Used to sort the AccountDatabase based off of Account Types.
-     * Utilizes a selection sort algorithm.
-     */
+
     private void selectionSortAccounts(){
         for (int i = 0; i < numAcct - 1; i++){
             int min = i;
             for (int j = i + 1; j < numAcct; j++){
-                if (accounts[j].toString().substring(0,3).compareTo(accounts[min].toString().substring(0,3)) == 0) {
+                if (accounts[j].compareTo(accounts[min]) == 0) {
                     if (accounts[j].getHolder().compareTo(accounts[min].getHolder()) < 0) {
                         min = j;
                     }
                 }
-                else if (accounts[j].toString().substring(0,3).compareTo(accounts[min].toString().substring(0,3)) < 0){
+                else if (accounts[j].compareTo(accounts[min]) < 0){
                     min = j;
                 }
             }
@@ -172,10 +144,7 @@ public class AccountDatabase {
             accounts[i] = minDateEvent;
         }
     }
-    /**
-     * Prints out the accounts of the database, sorted by the account types.
-     * Calls selectionSortAccounts() method
-     */
+
     public void printSorted() {
         selectionSortAccounts();
         if (numAcct == 0){
@@ -190,12 +159,7 @@ public class AccountDatabase {
 
 
     } // sort by account type and profile, then print
-    /**
-     * responsible for calculating the monthly fee using instance of operator to determine account type
-     * calling monthly fee of respective account to calculate monthly fee.
-     * @param account The account.
-     * @return monthly fee for given account
-     */
+
     private double calcMonthlyFee(Account account) {
         if (account instanceof CollegeChecking acc) {
             return acc.monthlyFee();
@@ -211,12 +175,7 @@ public class AccountDatabase {
         }
         return 0;
     }
-    /**
-     * responsible for calculating the monthly interest using instance of operator to determine account type
-     * calling monthlyInterest of respective account to calculate monthly interest.
-     * @param account The account.
-     * @return monthly interest for given account
-     */
+
     private double calcMonthlyInterest(Account account) {
         if (account instanceof CollegeChecking acc) {
             return acc.monthlyInterest();
@@ -231,12 +190,11 @@ public class AccountDatabase {
             return acc.monthlyInterest();
         }
         return 0;
+
     }
-    /**
-     * responsible for displaying all account.
-     * Also will display the calculated fees and monthly interests based on current balances
-     */
+
     public void printFeesAndInterests() {
+        selectionSortAccounts();
         if (numAcct == 0){
             System.out.println("Account Database is empty!");
             return;
@@ -253,10 +211,9 @@ public class AccountDatabase {
         }
         System.out.println("*end of list.\n");
     } //calculate interests/fees, then print
-    /**
-     * calculates and prints the updated balances of all accounts in the database after applying monthly fees and interests.
-     */
+
     public void printUpdatedBalances() {
+        selectionSortAccounts();
         if (numAcct == 0){
             System.out.println("Account Database is empty!");
             return;
@@ -267,6 +224,9 @@ public class AccountDatabase {
             double fee = calcMonthlyFee(accounts[i]);
             double interest = calcMonthlyInterest(accounts[i]);
             accounts[i].setBalance(accounts[i].getBalance() - fee + interest);
+            if (accounts[i] instanceof MoneyMarket acc) {
+                acc.setWithdrawal(0);
+            }
             System.out.println(accounts[i]);
         }
         System.out.println("*end of list.\n");
