@@ -27,6 +27,7 @@ public class AccountDatabase {
         accounts = new Account[baseSize];
         numAcct = 0;
     }
+
     /**
      * Searches for a specified account object in the list.
      * Uses the criterion specified in account's compareTo() method.
@@ -41,10 +42,11 @@ public class AccountDatabase {
         }
         return NOT_FOUND;
     }
+
     /**
      * Searches for a specified account object in the list.
      * Uses the criterion specified in account's compareTo() method.
-     * Specifically for opening an accoutn
+     * Specifically for opening an account
      * @param account The account to be searched for.
      * @return true if its found; false for not found.
      */
@@ -56,6 +58,7 @@ public class AccountDatabase {
         }
         return false;
     }
+
     /**
      * Increases the capacity of the Accounts array by adding 4 account slots.
      */
@@ -66,6 +69,7 @@ public class AccountDatabase {
         }
         accounts = moreAccounts;
     } //increase the capacity by 4
+
     /**
      * Checks if the specified Account is already in the AccountDatabase.
      * @param account Account to be looked for.
@@ -100,6 +104,7 @@ public class AccountDatabase {
         numAcct++;
         return true;
     } //add a new account
+
     /**
      * Closes/removes a specified Account Object from the accounts list.
      * @param account The account to be closed.
@@ -118,12 +123,12 @@ public class AccountDatabase {
             return false;
         }
     } //remove the given account
+
     /**
      * Withdraws a certain amount from a specified Account Object from the accounts list.
      * @param account The account to withdraw from.
-     * @return True if the withdraw operation happened successfully, otherwise false.
+     * @return True if the withdrawal operation happened successfully, otherwise false.
      */
-
     public boolean withdraw(Account account) {
         int foundAccount = find(account);
         if (foundAccount != NOT_FOUND) {
@@ -165,6 +170,7 @@ public class AccountDatabase {
             }
         }
     }
+
     /**
      * Used to sort the AccountDatabase based off of Account Types.
      * Utilizes a selection sort algorithm.
@@ -187,6 +193,7 @@ public class AccountDatabase {
             accounts[i] = minDateEvent;
         }
     }
+
     /**
      * Prints out the accounts of the database, sorted by the account types.
      * Calls selectionSortAccounts() method
@@ -203,6 +210,7 @@ public class AccountDatabase {
         }
         System.out.println("*end of list.\n");
     } // sort by account type and profile, then print
+
     /**
      * responsible for calculating the monthly fee using instance of operator to determine account type
      * calling monthly fee of respective account to calculate monthly fee.
@@ -224,6 +232,7 @@ public class AccountDatabase {
         }
         return 0;
     }
+
     /**
      * responsible for calculating the monthly interest using instance of operator to determine account type
      * calling monthlyInterest of respective account to calculate monthly interest.
@@ -246,9 +255,10 @@ public class AccountDatabase {
         return 0;
 
     }
+
     /**
-     * responsible for displaying all account.
-     * Also will display the calculated fees and monthly interests based on current balances
+     * Responsible for displaying all account.
+     * Will also display the calculated fees and monthly interests based on current balances
      */
     public void printFeesAndInterests() {
         selectionSortAccounts();
@@ -268,6 +278,7 @@ public class AccountDatabase {
         }
         System.out.println("*end of list.\n");
     } //calculate interests/fees, then print
+
     /**
      * calculates and prints the updated balances of all accounts in the database after applying monthly fees and interests.
      */

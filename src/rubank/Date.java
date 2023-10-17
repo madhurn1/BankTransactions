@@ -9,9 +9,9 @@ import java.util.StringTokenizer;
  @author Dany Chucri, Madhur Nutulapati
  */
 public class Date implements Comparable<Date> {
-    private final int year;
-    private final int month;
-    private final int day;
+    private final int year; // Year of the date
+    private final int month; // Month of the date
+    private final int day; // Day of the date
 
     public static final int QUADRENNIAL = 4;
     public static final int CENTENNIAL = 100;
@@ -37,6 +37,7 @@ public class Date implements Comparable<Date> {
         this.year = Integer.parseInt(part.nextToken());
 //        System.out.println(this.year);
     }
+
     /**
      Creates an instance of Date using the current date.
      */
@@ -153,6 +154,7 @@ public class Date implements Comparable<Date> {
             }
         }
     }
+
     /**
      * Used by createDate() in Transaction Manager to calculate the age from the given DOB.
      * @return age
@@ -172,6 +174,7 @@ public class Date implements Comparable<Date> {
             }
         }
     }
+
     /**
      * Used by checkToday() in isValid to check if the date is the current day.
      * @return true for if it is the current day. False if it is not.

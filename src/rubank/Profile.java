@@ -5,9 +5,10 @@ package rubank;
  @author Dany Chucri, Madhur Nutulapati
  */
 public class Profile implements Comparable<Profile> {
-    private String fname;
-    private String lname;
-    private Date dob;
+    private final String fname; // First name of the account holder
+    private final String lname; // Last name of the account holder
+    private final Date dob; // Date of birth of the account holder
+
     /**
      Creates an instance of Profile.
      @param fname first name of account holder
@@ -19,6 +20,7 @@ public class Profile implements Comparable<Profile> {
         this.lname = lname;
         this.dob = dob;
     }
+
     /**
      Basic Getter to retrieve the first name
      @return first Name
@@ -26,6 +28,7 @@ public class Profile implements Comparable<Profile> {
     public String getFname() {
         return fname;
     }
+
     /**
      Basic Getter to retrieve the last name
      @return last Name
@@ -34,10 +37,10 @@ public class Profile implements Comparable<Profile> {
         return lname;
     }
 
-        /**
-         Basic Getter to retrieve the Date object -> Date of Birth
-         @return Date object (for date of birth)
-         */
+    /**
+     Basic Getter to retrieve the Date object -> Date of Birth
+     @return Date object (for date of birth)
+     */
     public Date getDOB() {
         return dob;
     }

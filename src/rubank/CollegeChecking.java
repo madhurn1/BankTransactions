@@ -1,17 +1,18 @@
 package rubank;
 
 import java.text.DecimalFormat;
+
 /**
  Implements methods for calculating monthly interests and fees specific to the characteristics of a college checking account
  Custom String representations to sort accounts.
  @author Dany Chucri, Madhur Nutulapati
  */
-
 public class CollegeChecking extends Checking {
     private final Campus campus; //campus code 0 - New Brunswick, 1 - Newark, 2 - Camden
 
     private static final double INT_RATE = 0.01; //1%
     private static final double MONTHLY_FEE = 0;
+
     /**
      Creates an instance of Checking.
      @param holder The profile class object holder.
@@ -22,6 +23,7 @@ public class CollegeChecking extends Checking {
             super(holder,balance);
             this.campus = campus;
     }
+
     /**
      Basic getter that retrieves the campus code.
      @return Campus object indicating 0 for New Brunswick 1 for Newark 2 Camden
@@ -52,6 +54,7 @@ public class CollegeChecking extends Checking {
             return MONTHLY_FEE;
         }
     }
+
     /**
      method formats and returns a string representation of a college checking account,
      including the holder's name, date of birth, and balance.
@@ -63,6 +66,7 @@ public class CollegeChecking extends Checking {
         String writtenBalance = formatter.format(balance);
         return "College Checking::" + holder.getFname() + " " + holder.getLname() + " " + holder.getDOB() + "::Balance " + writtenBalance + "::" + campus.toString();
     }
+
     /**
      Compares two college checking accounts based on their account type.
      @param obj is the other account obj being compared.

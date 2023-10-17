@@ -7,8 +7,8 @@ package rubank;
  @author Dany Chucri, Madhur Nutulapati
  */
 public abstract class Account implements Comparable<Account> {
-    protected Profile holder;
-    protected double balance;
+    protected Profile holder; // Profile of the bank account owner
+    protected double balance; // Current balance in the account
 
     public abstract double monthlyInterest();
 
@@ -47,11 +47,13 @@ public abstract class Account implements Comparable<Account> {
     public void setBalance(double newBalance) {
         balance = newBalance;
     }
+
     /**
      abstract declaration to create subclasses custom string representations.
      @return a string that represents specific account type's state,holder's name, account type, balance.
      */
     public abstract String toString();
+
     /**
      abstract declaration should implement own comparison logic. Compare two accounts based on various criteria.
      @param obj which is the other account obj which is participating in the comparison.

@@ -1,6 +1,7 @@
 package rubank;
 
 import java.text.DecimalFormat;
+
 /**
  Implements methods for calculating monthly interests and fees specific to the characteristics of a Savings account
  Custom String representations to sort accounts.
@@ -23,9 +24,14 @@ public class Savings extends Account {
         this.isLoyal = isLoyal;
     }
 
+    /**
+     * Basic getter for the loyalty status of the account
+     * @return true if loyal, false if not
+     */
     public boolean getLoyalty() {
         return isLoyal;
     }
+
     /**
      Calculates monthly interest with respect to savings account criteria.
      @return the balance with monthly interest
@@ -41,6 +47,7 @@ public class Savings extends Account {
         }
         return monthlyInt;
     }
+
     /**
      Calculates monthly fee with respect to Savings account criteria.
      @return the monthly fee or no fee if balance greater than or equal to 500
@@ -54,6 +61,7 @@ public class Savings extends Account {
             return MONTHLY_FEE;
         }
     }
+
     /**
      method formats and returns a string representation of a savings account,
      including the holder's name, date of birth, and balance.
@@ -67,6 +75,7 @@ public class Savings extends Account {
         if (isLoyal) loyalty += "::is loyal";
         return "Savings::" + holder.getFname() + " " + holder.getLname() + " " + holder.getDOB() + "::Balance " + writtenBalance + loyalty;
     }
+
     /**
      Compares two Savings accounts based on their account type.
      @param obj is the other account obj being compared.

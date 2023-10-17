@@ -6,9 +6,8 @@ import java.util.Scanner;
  * Can process a single or multiple lines at once.
  * @author Dany Chucri, Madhur Nutulapati
  */
-
 public class TransactionManager {
-    private final AccountDatabase accountDatabase;
+    private final AccountDatabase accountDatabase; // The Database structure to hold bank accounts
     private static final int OPEN_INDICATION = 1;
     private static final int CLOSE_INDICATION = 2;
     private static final int DEPOSIT_INDICATION = 3;
@@ -19,7 +18,6 @@ public class TransactionManager {
     /**
      * Instantiates the TransactionManager using Account Database.
      */
-
     public TransactionManager(){
         accountDatabase = new AccountDatabase();
     }
@@ -68,8 +66,9 @@ public class TransactionManager {
             }
         }
     }
+
     /**
-     To retrieve the banktype given the token string entry
+     To retrieve the type of bank, given the token string entry
      @param entry String entry of the token.
      @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
      */
@@ -82,14 +81,13 @@ public class TransactionManager {
             default -> 5;
         };
     }
+
     /**
      To create Checking object to perform the respective operation of opening,closing, depositing, or withdrawing.
      @param addProfile the Profile object
      @param balance The user balance information
      @param operation Indicates either open, close, Deposit, or Withdraw
-     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
      */
-
     private void createChecking(Profile addProfile,double balance,int operation){
         Checking addAccount = new Checking(addProfile,balance);
         if(operation == OPEN_INDICATION){
@@ -124,15 +122,14 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+
     /**
      To create College Checking object to perform the respective operation of opening,closing, depositing, or withdrawing.
      @param addProfile the Profile object
      @param balance The user balance information
      @param code The campus code - > 0 - New Brunswick; 1 - Newark ; 2 - Camden
      @param operation Indicates either open, close, Deposit, or Withdraw
-     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
      */
-
     private void createCollegeChecking(Profile addProfile,double balance, Campus code,int operation){
         CollegeChecking addAccount = new CollegeChecking(addProfile,balance,code);
         if(operation==OPEN_INDICATION){
@@ -167,14 +164,13 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+
     /**
      To create Money Market object to perform the respective operation of opening,closing, depositing, or withdrawing.
      @param addProfile the Profile object
      @param balance The user balance information
      @param operation Indicates either open, close, Deposit, or Withdraw
-     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
      */
-
     private void createMoneyMarket(Profile addProfile,double balance,int operation){
         MoneyMarket addAccount = new MoneyMarket(addProfile,balance);
         if( operation == OPEN_INDICATION ){
@@ -212,15 +208,14 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+
     /**
      To create Savings object to perform the respective operation of opening,closing, depositing, or withdrawing.
      @param addProfile the Profile object
      @param balance The user balance information
      @param loyal indicating whether holder is Loyal or not. 1 Being loyal and otherwise being not loyal.
      @param operation Indicates either open, close, Deposit, or Withdraw
-     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
      */
-
     private void createSavings(Profile addProfile,double balance, int loyal,int operation){
         boolean loyalKey = loyal == 1;
         Savings addAccount = new Savings(addProfile, balance, loyalKey);
@@ -256,12 +251,12 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+
     /**
      Helper method to give us the respective phrase for the enum Campus class.
      @param campCode 0-New Brunswick; 1-Newark;2-Camden
      @return string returning the phrase for the respective campCode integer
      */
-
     private String checkCampusCode(int campCode){
         if(campCode==0){
             return "NEW_BRUNSWICK";
@@ -274,11 +269,11 @@ public class TransactionManager {
             return "INVALID";
         }
     }
+
     /**
      * Command for opening an Account to the Account Database.
      * @param token An array of tokens from the command-line arguments.
      */
-
     private void oCommand(String[] token) {
         if (token.length == 1) {
             System.out.println("Invalid Command!");
@@ -318,6 +313,7 @@ public class TransactionManager {
             System.out.println("Error with adding an account.");
         }
     }
+
     /**
      * Instantiates a Date object to be used for the creation of an Account.
      * Performs error checks on the validity of a date.
@@ -325,7 +321,6 @@ public class TransactionManager {
      * @param collegeIndication indicates whether it is a college checking account to perform age check
      * @return The Date object to be used.
      */
-
     private Date createDate(String date,int collegeIndication){
         Date addDate = new Date(date);
         if(addDate.isValid() == INVALID_DATE){
@@ -348,7 +343,6 @@ public class TransactionManager {
      * Command for closing an Account from the Account Database.
      * @param token An array of tokens from the command-line arguments.
      */
-
     private void cCommand(String[] token){
         if(token.length!=5){
             System.out.println("Missing data for closing an account.");
@@ -380,9 +374,8 @@ public class TransactionManager {
     /**
      * Will check the balance when called
      * @param token An array of tokens from the command-line arguments.
-     * @param type deposit or withdrawl
+     * @param type deposit or withdrawal
      */
-
     private double checkBalance(String token, String type) {
         double balanceAmount;
         try {
@@ -400,11 +393,11 @@ public class TransactionManager {
         }
         return balanceAmount;
     }
+
     /**
      * Command for depositing into Account from the Account Database.
      * @param token An array of tokens from the command-line arguments.
      */
-
     private void dCommand(String[] token) {
         if(token.length!=6){
             System.out.println("Invalid command format.");
@@ -432,11 +425,11 @@ public class TransactionManager {
             System.out.println("Error processing command");
         }
     }
+
     /**
      * Command for withdrawing from Account from the Account Database.
      * @param token An array of tokens from the command-line arguments.
      */
-
     private void wCommand(String [] token){
         if(token.length!=6){
             System.out.println("Invalid command format.");
@@ -473,18 +466,21 @@ public class TransactionManager {
     private void pCommand(){
         accountDatabase.printSorted();
     }
+
     /**
      *printing fees and Interests
      */
     private void piCommand(){
         accountDatabase.printFeesAndInterests();
     }
+
     /**
      *printing and updating balances
      */
     private void ubCommand(){
         accountDatabase.printUpdatedBalances();
     }
+
     public static void main(String[] args){
     }
 }

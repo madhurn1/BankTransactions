@@ -6,9 +6,9 @@ package rubank;
  @author Dany Chucri, Madhur Nutulapati
  */
 public enum Campus {
-        NEW_BRUNSWICK(0),
-        NEWARK(1),
-        CAMDEN(2);
+        NEW_BRUNSWICK(0), // Enum representing the New Brunswick Campus
+        NEWARK(1), // Enum representing the Newark Campus
+        CAMDEN(2); // Enum representing the Camden Campus
 
         private final int value;
 
