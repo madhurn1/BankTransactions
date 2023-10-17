@@ -94,8 +94,7 @@ public class AccountDatabase {
             if (newBalance < 0) return false;
             accounts[foundAccount].setBalance(newBalance);
             if (accounts[foundAccount] instanceof MoneyMarket acc) {
-                if (acc.getWithdrawals() >= 3) {
-                    double mmBalance = acc.getBalance() - 10;
+                    double mmBalance = acc.getBalance();
                     if (mmBalance < 0) {
                         acc.setBalance(acc.getBalance() + account.getBalance());
                         return false;
@@ -103,7 +102,6 @@ public class AccountDatabase {
                     else {
                         acc.setBalance(mmBalance);
                     }
-                }
                 if (newBalance < 2000 && (acc.getLoyalty())) {
                     acc.setLoyalty(false);
                 }
@@ -196,6 +194,7 @@ public class AccountDatabase {
     }
 
     public void printFeesAndInterests() {
+        selectionSortAccounts();
         if (numAcct == 0){
             System.out.println("Account Database is empty!");
             return;
@@ -214,6 +213,7 @@ public class AccountDatabase {
     } //calculate interests/fees, then print
 
     public void printUpdatedBalances() {
+        selectionSortAccounts();
         if (numAcct == 0){
             System.out.println("Account Database is empty!");
             return;
@@ -224,6 +224,9 @@ public class AccountDatabase {
             double fee = calcMonthlyFee(accounts[i]);
             double interest = calcMonthlyInterest(accounts[i]);
             accounts[i].setBalance(accounts[i].getBalance() - fee + interest);
+            if (accounts[i] instanceof MoneyMarket acc) {
+                acc.setWithdrawal(0);
+            }
             System.out.println(accounts[i]);
         }
         System.out.println("*end of list.\n");

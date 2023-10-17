@@ -25,6 +25,10 @@ public class MoneyMarket extends Savings{
         withdrawal++;
     }
 
+    public void setWithdrawal (int x) {
+        withdrawal = x;
+    }
+
     @Override
     public double monthlyInterest() {
         double monthlyInt;
@@ -39,8 +43,14 @@ public class MoneyMarket extends Savings{
 
     @Override
     public double monthlyFee(){
-        if (balance < 2000.0) {
+        if (balance < 2000.0 && withdrawal > 3) {
+            return MONTHLY_FEE + 10.0;
+        }
+        else if (balance < 2000.0) {
             return MONTHLY_FEE;
+        }
+        else if (withdrawal > 3) {
+            return 10.0;
         }
         return 0.0;
     }

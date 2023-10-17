@@ -91,17 +91,21 @@ public class TransactionManager {
         } else if (operation==DEPOSIT_INDICATION) {
             if (!(accountDatabase.contains(addAccount))) {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is not in the database.");
-
             } else {
                 accountDatabase.deposit(addAccount);
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Deposit - balance updated.");
             }
         } else if (operation==WITHDRAW_INDICATION) {
-            if(accountDatabase.withdraw(addAccount))
-                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Withdraw - balance updated.");
-            else
-                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Withdraw - insufficient fund.");
-        } else{
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is not in the database.");
+            }
+            else {
+                if (accountDatabase.withdraw(addAccount))
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Withdraw - balance updated.");
+                else
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Withdraw - insufficient fund.");
+            }
+        } else {
             System.out.println("The account is already on the database.");
         }
     }
@@ -127,10 +131,15 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Deposit - balance updated.");
             }
         } else if (operation==WITHDRAW_INDICATION) {
-            if(accountDatabase.withdraw(addAccount))
-                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Withdraw - balance updated.");
-            else
-                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Withdraw - insufficient fund.");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) is not in the database.");
+            }
+            else {
+                if (accountDatabase.withdraw(addAccount))
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Withdraw - balance updated.");
+                else
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Withdraw - insufficient fund.");
+            }
         } else{
             System.out.println("The account is already on the database.");
         }
@@ -160,10 +169,15 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Deposit - balance updated.");
             }
         } else if (operation==WITHDRAW_INDICATION) {
-            if(accountDatabase.withdraw(addAccount))
-                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Withdraw - balance updated.");
-            else
-                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Withdraw - insufficient fund.");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) is not in the database.");
+            }
+            else {
+                if (accountDatabase.withdraw(addAccount))
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Withdraw - balance updated.");
+                else
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Withdraw - insufficient fund.");
+            }
         } else{
             System.out.println("The account is already on the database.");
         }
@@ -191,10 +205,15 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Deposit - balance updated.");
             }
         } else if (operation==WITHDRAW_INDICATION) {
-            if(accountDatabase.withdraw(addAccount))
-                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Withdraw - balance updated.");
-            else
-                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Withdraw - insufficient fund.");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) is not in the database.");
+            }
+            else {
+                if (accountDatabase.withdraw(addAccount))
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Withdraw - balance updated.");
+                else
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Withdraw - insufficient fund.");
+            }
         } else{
             System.out.println("The account is already on the database.");
         }
@@ -316,6 +335,26 @@ public class TransactionManager {
             System.out.println("Error processing command");
         }
     }
+
+    // Checks if the given amount for a deposit or withdrawal is valid
+    private double checkBalance(String token, String type) {
+        double balanceAmount;
+        try {
+            balanceAmount = Double.parseDouble(token);
+        } catch (Exception e) {
+            System.out.println("Not a valid amount.");
+            return -1;
+        }
+        if (balanceAmount <= 0){
+            String s;
+            if (type.equals("Deposit")) s = "Deposit";
+            else s = "Withdraw";
+            System.out.println(s + " - amount cannot be 0 or negative.");
+            return -1;
+        }
+        return balanceAmount;
+    }
+
     private void dCommand(String[] token) {
         if(token.length!=6){
             System.out.println("Invalid command format.");
@@ -328,50 +367,54 @@ public class TransactionManager {
                 System.out.println("DOB invalid: " + dateInput + " cannot be today or a future day.");
                 return;
             }
+            double depositAmount = checkBalance(token[5], "Deposit");
+            if (depositAmount <= 0) return;
             Profile depositAccount = new Profile(token[2],token[3],dateInput);
             if(key==1)
-                createChecking(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
+                createChecking(depositAccount,depositAmount,DEPOSIT_INDICATION);
             else if(key==2)
-                createCollegeChecking(depositAccount,Double.parseDouble(token[5]), rubank.Campus.NEW_BRUNSWICK,DEPOSIT_INDICATION);
+                createCollegeChecking(depositAccount,depositAmount,rubank.Campus.NEW_BRUNSWICK,DEPOSIT_INDICATION);
             else if(key ==3)
-                createMoneyMarket(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
+                createMoneyMarket(depositAccount,depositAmount,DEPOSIT_INDICATION);
             else if(key == 4)
-                createSavings(depositAccount,Double.parseDouble(token[5]),0,DEPOSIT_INDICATION);
-            else
-                System.out.println("Not valid Bank Type 2");//specify
+                createSavings(depositAccount,depositAmount,0,DEPOSIT_INDICATION);
         }catch (Exception e){
             System.out.println("Error processing command");
         }
     }
+
     private void wCommand(String [] token){
         if(token.length!=6){
             System.out.println("Invalid command format.");
             return;
         }
-        //You should reject the transaction if an invalid amount is
-        //entered. Below are the sample transactions.
-        //LOOK INTO THIS
         try{
             int key = bankType(token[1]);
-            Date dateInput = createDate(token[4], key);
-            if (dateInput == null) return;
+            Date dateInput = new Date(token[4]);
+            if (dateInput.isValid() == 2) {
+                System.out.println("DOB invalid: " + dateInput + " cannot be today or a future day.");
+                return;
+            }
+            double withdrawAmount = checkBalance(token[5], "Withdraw");
+            if (withdrawAmount <= 0) return;
             Profile depositAccount = new Profile(token[2],token[3],dateInput);
             if(key==1)
-                createChecking(depositAccount,Double.parseDouble(token[5]),WITHDRAW_INDICATION);
+                createChecking(depositAccount,withdrawAmount,WITHDRAW_INDICATION);
             else if(key==2)
-                createCollegeChecking(depositAccount,Double.parseDouble(token[5]),rubank.Campus.NEW_BRUNSWICK,WITHDRAW_INDICATION);
+                createCollegeChecking(depositAccount,withdrawAmount,rubank.Campus.NEW_BRUNSWICK,WITHDRAW_INDICATION);
             else if(key ==3)
-                createMoneyMarket(depositAccount,Double.parseDouble(token[5]),WITHDRAW_INDICATION);
+                createMoneyMarket(depositAccount,withdrawAmount,WITHDRAW_INDICATION);
             else if(key == 4)
-                createSavings(depositAccount,Double.parseDouble(token[5]),0,WITHDRAW_INDICATION);
+                createSavings(depositAccount,withdrawAmount,0,WITHDRAW_INDICATION);
             else
                 System.out.println("Not valid Bank Type 4");//specify
         }catch (Exception e){
             System.out.println("Error processing command");
         }
     }
+
         /**
-         * Command for printing the event calendar as it currently is.
+         * Command for printing the account database as it currently is.
          */
     private void pCommand(){
         accountDatabase.printSorted();
