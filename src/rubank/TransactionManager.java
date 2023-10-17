@@ -13,6 +13,8 @@ public class TransactionManager {
     private static final int CLOSE_INDICATION = 2;
     private static final int DEPOSIT_INDICATION = 3;
     private static final int WITHDRAW_INDICATION = 4;
+    private static final int  INVALID_DATE= 1;
+    private static final int  NO_TODAY_NO_FUTURE= 2;
 
     /**
      * Instantiates the TransactionManager using Account Database.
@@ -326,14 +328,11 @@ public class TransactionManager {
 
     private Date createDate(String date,int collegeIndication){
         Date addDate = new Date(date);
-        if(addDate.isValid() == 1){
+        if(addDate.isValid() == INVALID_DATE){
             System.out.println("DOB invalid: " + date + " not a valid calendar date!");
             return null;
-        } else if (addDate.isValid() == 2) {
+        } else if (addDate.isValid() == NO_TODAY_NO_FUTURE) {
             System.out.println("DOB invalid: " + date + " cannot be today or a future day.");
-            return null;
-        } else if (addDate.isValid() == 3) {
-            System.out.println(date + ": Event date must be within 6 months!");
             return null;
         } else if(collegeIndication == 2 && addDate.checkAge() >= 24){
             System.out.println("DOB invalid: " + date + " over 24.");
