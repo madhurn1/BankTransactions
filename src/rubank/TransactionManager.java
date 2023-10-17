@@ -2,7 +2,7 @@ package rubank;
 import java.util.Scanner;
 
 /**
- * User interface to process command line input for the Event Calendar.
+ * User interface to process command line input for the Account Database.
  * Can process a single or multiple lines at once.
  * @author Dany Chucri, Madhur Nutulapati
  */
@@ -14,14 +14,14 @@ public class TransactionManager {
     private static final int WITHDRAW_INDICATION = 4;
 
     /**
-     * Instantiates the event organizer using Event Calendar.
+     * Instantiates the TransactionManager using Account Database.
      */
     public TransactionManager(){
         accountDatabase = new AccountDatabase();
     }
 
     /**
-     * Begins the reading of standard input, parsing and executing commands for the Event Organizer.
+     * Begins the reading of standard input, parsing and executing commands for Transaction Manager.
      */
     public void run(){
         Scanner S = new Scanner(System.in);
@@ -64,7 +64,11 @@ public class TransactionManager {
             }
         }
     }
-
+    /**
+     To retrieve the banktype given the token string entry
+     @param entry String entry of the token.
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
     private int bankType(String entry) {
         return switch (entry) {
             case "C" -> 1;
@@ -74,7 +78,13 @@ public class TransactionManager {
             default -> 5;
         };
     }
-
+    /**
+     To create Checking object to perform the respective operation of opening,closing, depositing, or withdrawing.
+     @param addProfile the Profile object
+     @param balance The user balance information
+     @param operation Indicates either open, close, Deposit, or Withdraw
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
     private void createChecking(Profile addProfile,double balance,int operation){
         Checking addAccount = new Checking(addProfile,balance);
         if(operation == OPEN_INDICATION){
@@ -84,23 +94,39 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is already in the database.");
         } else if (operation==CLOSE_INDICATION){
             if (accountDatabase.close(addAccount)) {
-                System.out.println("FINISH LINE");
-                System.out.println("Account has been removed from the database!");}
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) has been closed.");
+            }
             else
-                System.out.println("ERROR closing account");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is not in the database.");
         } else if (operation==DEPOSIT_INDICATION) {
-            accountDatabase.deposit(addAccount);
-            System.out.println("Account has been deposited into!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is not in the database.");
+            } else {
+                accountDatabase.deposit(addAccount);
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Deposit - balance updated.");
+            }
         } else if (operation==WITHDRAW_INDICATION) {
-            if(accountDatabase.withdraw(addAccount))
-                System.out.println("Money has been withdrawn");
-            else
-                System.out.println("Error withdrawing!");
-        } else{
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) is not in the database.");
+            }
+            else {
+                if (accountDatabase.withdraw(addAccount))
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Withdraw - balance updated.");
+                else
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(C) Withdraw - insufficient fund.");
+            }
+        } else {
             System.out.println("The account is already on the database.");
         }
     }
-
+    /**
+     To create College Checking object to perform the respective operation of opening,closing, depositing, or withdrawing.
+     @param addProfile the Profile object
+     @param balance The user balance information
+     @param code The campus code - > 0 - New Brunswick; 1 - Newark ; 2 - Camden
+     @param operation Indicates either open, close, Deposit, or Withdraw
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
     private void createCollegeChecking(Profile addProfile,double balance, Campus code,int operation){
         CollegeChecking addAccount = new CollegeChecking(addProfile,balance,code);
         if(operation==OPEN_INDICATION){
@@ -110,22 +136,38 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) is already in the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
-                System.out.println("Account has been removed from the database!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) has been closed.");
             else
-                System.out.println("ERROR closing account");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) is not in the database.");
         } else if (operation==DEPOSIT_INDICATION) {
-            accountDatabase.deposit(addAccount);
-            System.out.println("Account has been deposited into!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) is not in the database.");
+
+            } else {
+                accountDatabase.deposit(addAccount);
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Deposit - balance updated.");
+            }
         } else if (operation==WITHDRAW_INDICATION) {
-            if(accountDatabase.withdraw(addAccount))
-                System.out.println("Money has been withdrawn");
-            else
-                System.out.println("Error withdrawing!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) is not in the database.");
+            }
+            else {
+                if (accountDatabase.withdraw(addAccount))
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Withdraw - balance updated.");
+                else
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(CC) Withdraw - insufficient fund.");
+            }
         } else{
             System.out.println("The account is already on the database.");
         }
     }
-
+    /**
+     To create Money Market object to perform the respective operation of opening,closing, depositing, or withdrawing.
+     @param addProfile the Profile object
+     @param balance The user balance information
+     @param operation Indicates either open, close, Deposit, or Withdraw
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
     private void createMoneyMarket(Profile addProfile,double balance,int operation){
         MoneyMarket addAccount = new MoneyMarket(addProfile,balance);
         if( operation == OPEN_INDICATION ){
@@ -138,22 +180,39 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) is already in the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
-                System.out.println("Account has been removed from the database!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) has been closed.");
             else
-                System.out.println("ERROR closing account");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) is not in the database.");
         } else if (operation==DEPOSIT_INDICATION) {
-            accountDatabase.deposit(addAccount);
-            System.out.println("Account has been deposited into!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) is not in the database.");
+
+            } else {
+                accountDatabase.deposit(addAccount);
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Deposit - balance updated.");
+            }
         } else if (operation==WITHDRAW_INDICATION) {
-            if(accountDatabase.withdraw(addAccount))
-                System.out.println("Money has been withdrawn");
-            else
-                System.out.println("Error withdrawing!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) is not in the database.");
+            }
+            else {
+                if (accountDatabase.withdraw(addAccount))
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Withdraw - balance updated.");
+                else
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(MM) Withdraw - insufficient fund.");
+            }
         } else{
             System.out.println("The account is already on the database.");
         }
     }
-
+    /**
+     To create Savings object to perform the respective operation of opening,closing, depositing, or withdrawing.
+     @param addProfile the Profile object
+     @param balance The user balance information
+     @param loyal indicating whether holder is Loyal or not. 1 Being loyal and otherwise being not loyal.
+     @param operation Indicates either open, close, Deposit, or Withdraw
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
     private void createSavings(Profile addProfile,double balance, int loyal,int operation){
         boolean loyalKey = loyal == 1;
         Savings addAccount = new Savings(addProfile, balance, loyalKey);
@@ -164,22 +223,36 @@ public class TransactionManager {
                 System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) is already in the database.");
         } else if(operation==CLOSE_INDICATION){
             if(accountDatabase.close(addAccount))
-                System.out.println("Account has been removed from the database!");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) has been closed.");
             else
-                System.out.println("ERROR closing account");
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) is not in the database.");
         } else if (operation==DEPOSIT_INDICATION) {
-            accountDatabase.deposit(addAccount);
-            System.out.println("Account has been deposited into!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) is not in the database.");
+
+            } else {
+                accountDatabase.deposit(addAccount);
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Deposit - balance updated.");
+            }
         } else if (operation==WITHDRAW_INDICATION) {
-            if(accountDatabase.withdraw(addAccount))
-                System.out.println("Money has been withdrawn");
-            else
-                System.out.println("Error withdrawing!");
+            if (!(accountDatabase.contains(addAccount))) {
+                System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) is not in the database.");
+            }
+            else {
+                if (accountDatabase.withdraw(addAccount))
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Withdraw - balance updated.");
+                else
+                    System.out.println(addProfile.getFname() + " " + addProfile.getLname() + " " + addProfile.getDOB() + "(S) Withdraw - insufficient fund.");
+            }
         } else{
             System.out.println("The account is already on the database.");
         }
     }
-
+    /**
+     Helper method to give us the respective phrase for the enum Campus class.
+     @param campCode 0-New Brunswick; 1-Newark;2-Camden
+     @return string returning the phrase for the respective campCode integer
+     */
     private String checkCampusCode(int campCode){
         if(campCode==0){
             return "NEW_BRUNSWICK";
@@ -194,7 +267,7 @@ public class TransactionManager {
     }
 
     /**
-     * Command for adding an Event to the Event Calendar.
+     * Command for opening an Account to the Account Database.
      * @param token An array of tokens from the command-line arguments.
      */
     private void oCommand(String[] token) {
@@ -206,45 +279,43 @@ public class TransactionManager {
         }
         else try {
                 int key = bankType(token[1]);
-            Date dateInput = createDate(token[4], key);
-            /*if (dateInput == null) {
-                System.out.println("Invalid tokens");
-                return;
-            }*/
-            Profile addProfile = new Profile(token[2], token[3], dateInput);
+                Date dateInput = createDate(token[4], key);
+                if (dateInput == null) return;
+                Profile addProfile = new Profile(token[2], token[3], dateInput);
 
-            double balance;
-            try { balance = Double.parseDouble(token[5]);
-            } catch (Exception e) {
-                System.out.println("Not a valid amount.");
-                return;
-            }
-            if (balance <= 0) {
-                System.out.println("Initial deposit cannot be 0 or negative.");
-                return;
-            }
-            if (key == 2) {
-                String phraseLoc = checkCampusCode(Integer.parseInt(token[6]));
-                if (phraseLoc.equals("INVALID")) {
-                    System.out.println("Invalid campus code.");
+                double balance;
+                try { balance = Double.parseDouble(token[5]);
+                } catch (Exception e) {
+                    System.out.println("Not a valid amount.");
+                    return;
                 }
-                else createCollegeChecking(addProfile, balance, Campus.valueOf(phraseLoc), OPEN_INDICATION);
-            }
-            if (key == 1)
-                createChecking(addProfile, Double.parseDouble(token[5]), OPEN_INDICATION);
-            else if (key == 3)
-                createMoneyMarket(addProfile, Double.parseDouble(token[5]), OPEN_INDICATION);
-            else if (key == 4)
-                createSavings(addProfile, Double.parseDouble(token[5]), Integer.parseInt(token[6]), OPEN_INDICATION);
+                if (balance <= 0) {
+                    System.out.println("Initial deposit cannot be 0 or negative.");
+                    return;
+                }
+                if (key == 2) {
+                    String phraseLoc = checkCampusCode(Integer.parseInt(token[6]));
+                    if (phraseLoc.equals("INVALID")) {
+                        System.out.println("Invalid campus code.");
+                    }
+                    else createCollegeChecking(addProfile, balance, Campus.valueOf(phraseLoc), OPEN_INDICATION);
+                }
+                if (key == 1)
+                    createChecking(addProfile, Double.parseDouble(token[5]), OPEN_INDICATION);
+                else if (key == 3)
+                    createMoneyMarket(addProfile, Double.parseDouble(token[5]), OPEN_INDICATION);
+                else if (key == 4)
+                    createSavings(addProfile, Double.parseDouble(token[5]), Integer.parseInt(token[6]), OPEN_INDICATION);
             } catch(Exception e){
-            System.out.println("Error with adding an account.");
-        }
+                System.out.println("Error with adding an account.");
+            }
     }
 
     /**
-     * Instantiates a Date object to be used for the creation of an Event.
+     * Instantiates a Date object to be used for the creation of an Account.
      * Performs error checks on the validity of a date.
      * @param date A String token in the form of "xx/xx/xxxx".
+     * @param collegeIndication indicates whether it is a college checking account to perform age check
      * @return The Date object to be used.
      */
 
@@ -262,7 +333,7 @@ public class TransactionManager {
         } else if(collegeIndication == 2 && addDate.checkAge() >= 24){
             System.out.println("DOB invalid: " + date + " over 24.");
             return null;
-        } else if (addDate.checkAge()<=16) {
+        } else if (addDate.checkAge()<16) {
             System.out.println("DOB invalid: " + date + " under 16.");
             return null;
         }
@@ -270,12 +341,12 @@ public class TransactionManager {
     }
 
     /**
-     * Command for removing an Event from the Event Calendar.
+     * Command for closing an Account from the Account Database.
      * @param token An array of tokens from the command-line arguments.
      */
     private void cCommand(String[] token){
         if(token.length!=5){
-            System.out.println("Invalid command format.");
+            System.out.println("Missing data for closing an account.");
             return;
         }
         try{
@@ -283,11 +354,9 @@ public class TransactionManager {
             Date dateInput = createDate(token[4], key);
             if (dateInput == null) return;
             Profile closeAccount = new Profile(token[2],token[3],dateInput);
-            System.out.println("check 1");
             if(key==1)
                 createChecking(closeAccount,0,CLOSE_INDICATION);
             else if(key==2){
-                System.out.println("check 2");
                 createCollegeChecking(closeAccount,0, rubank.Campus.NEW_BRUNSWICK,CLOSE_INDICATION);}
             else if(key ==3)
                 createMoneyMarket(closeAccount,0,CLOSE_INDICATION);
@@ -299,6 +368,33 @@ public class TransactionManager {
             System.out.println("Error processing command");
         }
     }
+    /**
+     * Will check the balance when called
+     * @param token An array of tokens from the command-line arguments.
+     * @param type deposit or withdrawl
+     */
+    private double checkBalance(String token, String type) {
+        double balanceAmount;
+        try {
+            balanceAmount = Double.parseDouble(token);
+        } catch (Exception e) {
+            System.out.println("Not a valid amount.");
+            return -1;
+        }
+        if (balanceAmount <= 0){
+            String s;
+            if (type.equals("Deposit")) s = "Deposit";
+            else s = "Withdraw";
+            System.out.println(s + " - amount cannot be 0 or negative.");
+            return -1;
+        }
+        return balanceAmount;
+    }
+
+    /**
+     * Command for depositing into Account from the Account Database.
+     * @param token An array of tokens from the command-line arguments.
+     */
     private void dCommand(String[] token) {
         if(token.length!=6){
             System.out.println("Invalid command format.");
@@ -306,78 +402,76 @@ public class TransactionManager {
         }
         try{
             int key = bankType(token[1]);
-            Date dateInput = createDate(token[4], key);
-            if (dateInput == null) return;
+            Date dateInput = new Date(token[4]);
+            if (dateInput.isValid() == 2) {
+                System.out.println("DOB invalid: " + dateInput + " cannot be today or a future day.");
+                return;
+            }
+            double depositAmount = checkBalance(token[5], "Deposit");
+            if (depositAmount <= 0) return;
             Profile depositAccount = new Profile(token[2],token[3],dateInput);
             if(key==1)
-                createChecking(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
+                createChecking(depositAccount,depositAmount,DEPOSIT_INDICATION);
             else if(key==2)
-                createCollegeChecking(depositAccount,Double.parseDouble(token[5]), rubank.Campus.NEW_BRUNSWICK,DEPOSIT_INDICATION);
+                createCollegeChecking(depositAccount,depositAmount,rubank.Campus.NEW_BRUNSWICK,DEPOSIT_INDICATION);
             else if(key ==3)
-                createMoneyMarket(depositAccount,Double.parseDouble(token[5]),DEPOSIT_INDICATION);
+                createMoneyMarket(depositAccount,depositAmount,DEPOSIT_INDICATION);
             else if(key == 4)
-                createSavings(depositAccount,Double.parseDouble(token[5]),0,DEPOSIT_INDICATION);
-            else
-                System.out.println("Not valid Bank Type 2");//specify
+                createSavings(depositAccount,depositAmount,0,DEPOSIT_INDICATION);
         }catch (Exception e){
             System.out.println("Error processing command");
         }
     }
+
+    /**
+     * Command for withdrawing from Account from the Account Database.
+     * @param token An array of tokens from the command-line arguments.
+     */
     private void wCommand(String [] token){
         if(token.length!=6){
             System.out.println("Invalid command format.");
             return;
         }
-        //You should reject the transaction if an invalid amount is
-        //entered. Below are the sample transactions.
-        //LOOK INTO THIS
         try{
             int key = bankType(token[1]);
-            Date dateInput = createDate(token[4], key);
-            if (dateInput == null) return;
+            Date dateInput = new Date(token[4]);
+            if (dateInput.isValid() == 2) {
+                System.out.println("DOB invalid: " + dateInput + " cannot be today or a future day.");
+                return;
+            }
+            double withdrawAmount = checkBalance(token[5], "Withdraw");
+            if (withdrawAmount <= 0) return;
             Profile depositAccount = new Profile(token[2],token[3],dateInput);
             if(key==1)
-                createChecking(depositAccount,Double.parseDouble(token[5]),WITHDRAW_INDICATION);
+                createChecking(depositAccount,withdrawAmount,WITHDRAW_INDICATION);
             else if(key==2)
-                createCollegeChecking(depositAccount,Double.parseDouble(token[5]),rubank.Campus.NEW_BRUNSWICK,WITHDRAW_INDICATION);
+                createCollegeChecking(depositAccount,withdrawAmount,rubank.Campus.NEW_BRUNSWICK,WITHDRAW_INDICATION);
             else if(key ==3)
-                createMoneyMarket(depositAccount,Double.parseDouble(token[5]),WITHDRAW_INDICATION);
+                createMoneyMarket(depositAccount,withdrawAmount,WITHDRAW_INDICATION);
             else if(key == 4)
-                createSavings(depositAccount,Double.parseDouble(token[5]),0,WITHDRAW_INDICATION);
+                createSavings(depositAccount,withdrawAmount,0,WITHDRAW_INDICATION);
             else
                 System.out.println("Not valid Bank Type 4");//specify
         }catch (Exception e){
             System.out.println("Error processing command");
         }
     }
-        /**
-         * Command for printing the event calendar as it currently is.
-         */
+    /**
+     *printing sorted accounts from accountDatabase
+     */
     private void pCommand(){
         accountDatabase.printSorted();
     }
-//
-//    /**
-//     * Command for printing the event calendar, with the events sorted by dates and then timeslots.
-//     */
+    /**
+     *printing sorted accounts from accountDatabase
+     */
     private void piCommand(){
         accountDatabase.printFeesAndInterests();
     }
-//
-//    /**
-//     * Command for printing the event calendar, with the events sorted by campus and then building/room.
-//     */
+
     private void ubCommand(){
         accountDatabase.printUpdatedBalances();
     }
-//
-//    /**
-//     * Command for printing the event calendar, with the events sorted by the department in the contact.
-//     */
-//    private void pdCommand(){
-//        calendar.printByDepartment();
-//    }
-
     public static void main(String[] args){
     }
 }

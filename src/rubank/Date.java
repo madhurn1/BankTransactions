@@ -3,8 +3,9 @@ import java.util.Calendar;
 import java.util.StringTokenizer;
 
 /**
- An event's Date information, including their department and email.
- Check's the validity of an event's date to make sure it is in the future but not by more than 6 months.
+ An Account's Date information, including date of births.
+ Check's the validity of an account's date, which is the account holder's date of birth
+ to make sure it is not a future or present date, a valid date.
  @author Dany Chucri, Madhur Nutulapati
  */
 public class Date implements Comparable<Date> {
@@ -25,7 +26,7 @@ public class Date implements Comparable<Date> {
 
     /**
      Creates an instance of Date.
-     @param date A date String in the form of "xx/xx/xxxx".
+     @param date A date (date of birth) String in the form of "xx/xx/xxxx".
      */
     public Date(String date){
         StringTokenizer part = new StringTokenizer(date,"/");
@@ -70,7 +71,6 @@ public class Date implements Comparable<Date> {
         return year;
     }
 
-
     /**
      * {@inheritDoc}
      * Represents Date in the form of "xx/xx/xxxx".
@@ -103,8 +103,8 @@ public class Date implements Comparable<Date> {
     /**
      * Checks the validity of a given Date object.
      * The Date must follow the Gregorian calendar.
-     * A given event cannot be more than 6 months into the future.
-     * @return 0 for a valid date, 1 for an invalid date, 2 for non-future (past) date, 3 for a date more than 6 months away.
+     * A given event cannot be a future or present day.
+     * @return 0 for a valid date, 1 for an invalid date, 2 for future or present day, 3 for a date more than 6 months away.
      */
     public int isValid(){
 
@@ -130,12 +130,11 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Used by isValid() to ensure the Date is a future date.
+     * Used by isValid() to check if the Date is a future date.
      * @return True if the Date is a future date, otherwise false.
      */
     private boolean checkDate(){
         Date currDate = new Date();
-
         if (this.year > currDate.year) {
             return true;
         } else {
@@ -154,11 +153,13 @@ public class Date implements Comparable<Date> {
             }
         }
     }
-
+    /**
+     * Used by createDate() in Transaction Manager to calculate the age from the given DOB.
+     * @return age
+     */
     public int checkAge(){
         Calendar curr = Calendar.getInstance();
         int age = curr.get(Calendar.YEAR) - this.year;
-
         if(curr.get(Calendar.MONTH)+1 > this.month)
             return age;
         else if(curr.get(Calendar.MONTH)+1<this.month)
@@ -171,12 +172,14 @@ public class Date implements Comparable<Date> {
             }
         }
     }
-
+    /**
+     * Used by checkToday() in isValid to check if the date is the current day.
+     * @return true for if it is the current day. False if it is not.
+     */
     private boolean checkToday(){
         Date currDate = new Date();
         return this.year == currDate.year && this.month == currDate.month && this.day == currDate.day;
     }
-
     /**
      * Checks if a Date instance is part of a leap year.
      * @return True if it is a leap year, otherwise false.
