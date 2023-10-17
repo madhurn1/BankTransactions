@@ -2,26 +2,30 @@ package rubank;
 import java.util.Scanner;
 
 /**
- * User interface to process command line input for the Event Calendar.
+ * User interface to process command line input for the Account Database.
  * Can process a single or multiple lines at once.
  * @author Dany Chucri, Madhur Nutulapati
  */
+
 public class TransactionManager {
     private final AccountDatabase accountDatabase;
     private static final int OPEN_INDICATION = 1;
     private static final int CLOSE_INDICATION = 2;
     private static final int DEPOSIT_INDICATION = 3;
     private static final int WITHDRAW_INDICATION = 4;
+    private static final int  INVALID_DATE= 1;
+    private static final int  NO_TODAY_NO_FUTURE= 2;
 
     /**
-     * Instantiates the event organizer using Event Calendar.
+     * Instantiates the TransactionManager using Account Database.
      */
+
     public TransactionManager(){
         accountDatabase = new AccountDatabase();
     }
 
     /**
-     * Begins the reading of standard input, parsing and executing commands for the Event Organizer.
+     * Begins the reading of standard input, parsing and executing commands for Transaction Manager.
      */
     public void run(){
         Scanner S = new Scanner(System.in);
@@ -64,7 +68,11 @@ public class TransactionManager {
             }
         }
     }
-
+    /**
+     To retrieve the banktype given the token string entry
+     @param entry String entry of the token.
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
     private int bankType(String entry) {
         return switch (entry) {
             case "C" -> 1;
@@ -74,6 +82,13 @@ public class TransactionManager {
             default -> 5;
         };
     }
+    /**
+     To create Checking object to perform the respective operation of opening,closing, depositing, or withdrawing.
+     @param addProfile the Profile object
+     @param balance The user balance information
+     @param operation Indicates either open, close, Deposit, or Withdraw
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
 
     private void createChecking(Profile addProfile,double balance,int operation){
         Checking addAccount = new Checking(addProfile,balance);
@@ -109,6 +124,14 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+    /**
+     To create College Checking object to perform the respective operation of opening,closing, depositing, or withdrawing.
+     @param addProfile the Profile object
+     @param balance The user balance information
+     @param code The campus code - > 0 - New Brunswick; 1 - Newark ; 2 - Camden
+     @param operation Indicates either open, close, Deposit, or Withdraw
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
 
     private void createCollegeChecking(Profile addProfile,double balance, Campus code,int operation){
         CollegeChecking addAccount = new CollegeChecking(addProfile,balance,code);
@@ -144,6 +167,13 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+    /**
+     To create Money Market object to perform the respective operation of opening,closing, depositing, or withdrawing.
+     @param addProfile the Profile object
+     @param balance The user balance information
+     @param operation Indicates either open, close, Deposit, or Withdraw
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
 
     private void createMoneyMarket(Profile addProfile,double balance,int operation){
         MoneyMarket addAccount = new MoneyMarket(addProfile,balance);
@@ -182,6 +212,14 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+    /**
+     To create Savings object to perform the respective operation of opening,closing, depositing, or withdrawing.
+     @param addProfile the Profile object
+     @param balance The user balance information
+     @param loyal indicating whether holder is Loyal or not. 1 Being loyal and otherwise being not loyal.
+     @param operation Indicates either open, close, Deposit, or Withdraw
+     @return int 1 - for checking; 2 for College checking; 3 for Money Market; 4 for Savings
+     */
 
     private void createSavings(Profile addProfile,double balance, int loyal,int operation){
         boolean loyalKey = loyal == 1;
@@ -218,6 +256,11 @@ public class TransactionManager {
             System.out.println("The account is already on the database.");
         }
     }
+    /**
+     Helper method to give us the respective phrase for the enum Campus class.
+     @param campCode 0-New Brunswick; 1-Newark;2-Camden
+     @return string returning the phrase for the respective campCode integer
+     */
 
     private String checkCampusCode(int campCode){
         if(campCode==0){
@@ -231,11 +274,11 @@ public class TransactionManager {
             return "INVALID";
         }
     }
-
     /**
-     * Command for adding an Event to the Event Calendar.
+     * Command for opening an Account to the Account Database.
      * @param token An array of tokens from the command-line arguments.
      */
+
     private void oCommand(String[] token) {
         if (token.length == 1) {
             System.out.println("Invalid Command!");
@@ -275,24 +318,21 @@ public class TransactionManager {
             System.out.println("Error with adding an account.");
         }
     }
-
     /**
-     * Instantiates a Date object to be used for the creation of an Event.
+     * Instantiates a Date object to be used for the creation of an Account.
      * Performs error checks on the validity of a date.
      * @param date A String token in the form of "xx/xx/xxxx".
+     * @param collegeIndication indicates whether it is a college checking account to perform age check
      * @return The Date object to be used.
      */
 
     private Date createDate(String date,int collegeIndication){
         Date addDate = new Date(date);
-        if(addDate.isValid() == 1){
+        if(addDate.isValid() == INVALID_DATE){
             System.out.println("DOB invalid: " + date + " not a valid calendar date!");
             return null;
-        } else if (addDate.isValid() == 2) {
+        } else if (addDate.isValid() == NO_TODAY_NO_FUTURE) {
             System.out.println("DOB invalid: " + date + " cannot be today or a future day.");
-            return null;
-        } else if (addDate.isValid() == 3) {
-            System.out.println(date + ": Event date must be within 6 months!");
             return null;
         } else if(collegeIndication == 2 && addDate.checkAge() >= 24){
             System.out.println("DOB invalid: " + date + " over 24.");
@@ -305,9 +345,10 @@ public class TransactionManager {
     }
 
     /**
-     * Command for removing an Event from the Event Calendar.
+     * Command for closing an Account from the Account Database.
      * @param token An array of tokens from the command-line arguments.
      */
+
     private void cCommand(String[] token){
         if(token.length!=5){
             System.out.println("Missing data for closing an account.");
@@ -336,7 +377,12 @@ public class TransactionManager {
         }
     }
 
-    // Checks if the given amount for a deposit or withdrawal is valid
+    /**
+     * Will check the balance when called
+     * @param token An array of tokens from the command-line arguments.
+     * @param type deposit or withdrawl
+     */
+
     private double checkBalance(String token, String type) {
         double balanceAmount;
         try {
@@ -354,6 +400,10 @@ public class TransactionManager {
         }
         return balanceAmount;
     }
+    /**
+     * Command for depositing into Account from the Account Database.
+     * @param token An array of tokens from the command-line arguments.
+     */
 
     private void dCommand(String[] token) {
         if(token.length!=6){
@@ -382,6 +432,10 @@ public class TransactionManager {
             System.out.println("Error processing command");
         }
     }
+    /**
+     * Command for withdrawing from Account from the Account Database.
+     * @param token An array of tokens from the command-line arguments.
+     */
 
     private void wCommand(String [] token){
         if(token.length!=6){
@@ -413,34 +467,24 @@ public class TransactionManager {
         }
     }
 
-        /**
-         * Command for printing the account database as it currently is.
-         */
+    /**
+     *printing sorted accounts from accountDatabase
+     */
     private void pCommand(){
         accountDatabase.printSorted();
     }
-//
-//    /**
-//     * Command for printing the event calendar, with the events sorted by dates and then timeslots.
-//     */
+    /**
+     *printing fees and Interests
+     */
     private void piCommand(){
         accountDatabase.printFeesAndInterests();
     }
-//
-//    /**
-//     * Command for printing the event calendar, with the events sorted by campus and then building/room.
-//     */
+    /**
+     *printing and updating balances
+     */
     private void ubCommand(){
         accountDatabase.printUpdatedBalances();
     }
-//
-//    /**
-//     * Command for printing the event calendar, with the events sorted by the department in the contact.
-//     */
-//    private void pdCommand(){
-//        calendar.printByDepartment();
-//    }
-
     public static void main(String[] args){
     }
 }
